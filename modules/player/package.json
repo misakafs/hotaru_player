@@ -1,0 +1,26 @@
+{
+  "name": "player",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc -b && vite build",
+    "flutter": "tsc -b && vite build --mode flutter",
+    "preview": "vite preview",
+    "fmt": "prettier --write ."
+  },
+  "dependencies": {
+    "solid-js": "^1.8.20",
+    "xgplayer": "^3.0.19"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "prettier-plugin-rational-order": "^1.0.3",
+    "sass": "^1.77.8",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1",
+    "vite-plugin-singlefile": "^2.0.2",
+    "vite-plugin-solid": "^2.10.2"
+  }
+}

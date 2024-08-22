@@ -1,0 +1,24 @@
+name: hotaru_player
+description: "hotaru video player"
+version: 0.0.1
+
+environment:
+  sdk: ^3.5.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  mime: ^1.0.5
+  webview_flutter: ^4.9.0
+  webview_flutter_android: ^3.16.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  assets:
+    - packages/hotaru_player/assets/index.html
+
