@@ -38,4 +38,5 @@ body:before {
 #vs {
     flex: auto;
     height: 100%;
+    aspect-ratio: 16/9;
 }
