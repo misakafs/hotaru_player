@@ -11,8 +11,11 @@
     "fmt": "prettier --write ."
   },
   "dependencies": {
+    "artplayer": "^5.1.7",
+    "hls.js": "^1.5.15",
     "solid-js": "^1.8.20",
-    "xgplayer": "^3.0.19"
+    "xgplayer": "^3.0.19",
+    "xgplayer-hls": "^3.0.20"
   },
   "devDependencies": {
     "prettier": "^3.3.3",

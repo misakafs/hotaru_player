@@ -1,4 +1,5 @@
 import Player, {Events} from "xgplayer";
+import HlsPlugin from 'xgplayer-hls'
 import MobilePlugin from "xgplayer/es/plugins/mobile";
 
 
@@ -19,17 +20,17 @@ export class HotaruPlayer {
                 mini: false,
                 // @ts-ignore
                 playbackRate: false,
-                plugins: [MobilePlugin],
+                plugins: [MobilePlugin, HlsPlugin],
             })
 
             this.player.on(Events.ENDED, () => {
                 const msg = {
                     'event': 'ended'
                 }
-                Server.postMessage(JSON.stringify(msg))
+                Server?.postMessage(JSON.stringify(msg))
             })
 
-            Server.postMessage(JSON.stringify({event: 'init', data: {'status': 'ok'}}))
+            Server?.postMessage(JSON.stringify({event: 'init', data: {'status': 'ok'}}))
 
         } catch (e) {
             console.error('初始化异常:', e)
