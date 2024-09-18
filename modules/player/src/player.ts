@@ -8,6 +8,7 @@ export class HotaruPlayer {
 
     init(data: Record<string, any>) {
         try {
+            console.log('正在初始化')
             this.player = new Player({
                 id: 'vs',
                 url: data.url ?? '',
@@ -28,8 +29,10 @@ export class HotaruPlayer {
                 Server.postMessage(JSON.stringify(msg))
             })
 
+            Server.postMessage(JSON.stringify({event: 'init', data: {'status': 'ok'}}))
+
         } catch (e) {
-            console.error(e)
+            console.error('初始化异常:', e)
         }
     }
 
@@ -44,6 +47,9 @@ export class HotaruPlayer {
 
 
     listen(msg: string) {
+
+        console.log('监听消息:', msg)
+
         if (!msg.trim().length) {
             return;
         }

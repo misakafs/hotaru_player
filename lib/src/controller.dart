@@ -57,7 +57,6 @@ class HotaruPlayerController extends WebViewController {
 
   Future<void> loadFlutterAssetServer({
     Map<String, String> headers = const <String, String>{},
-    Uint8List? body,
   }) async {
     super.setBackgroundColor(const Color(0x00000000));
     super.setJavaScriptMode(JavaScriptMode.unrestricted);
@@ -74,10 +73,10 @@ class HotaruPlayerController extends WebViewController {
     }
 
     final port = await _server.start();
+
     return super.loadRequest(
       Uri.parse('http://localhost:$port/assets/index.html'),
       headers: headers,
-      body: body,
       method: LoadRequestMethod.get,
     );
   }

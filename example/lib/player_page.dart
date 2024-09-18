@@ -1,19 +1,6 @@
-# Hotaru Player
+import 'package:flutter/material.dart';
+import 'package:hotaru_player/hotaru_player.dart';
 
-- `AndroidManifest.xml`
-
-```html
-
-<uses-permission android:name="android.permission.INTERNET" />
-
-<application
-	...
-	android:usesCleartextTraffic="true">
-	...
-```
-
-
-```dart
 class PlayerPage extends StatefulWidget {
   const PlayerPage({super.key});
 
@@ -30,9 +17,12 @@ class _PlayerPageState extends State<PlayerPage> {
     controller = HotaruPlayerController();
     controller.loadFlutterAssetServer();
     controller.listen(onPageFinished: (url) async {
-      controller.postMessage(EventMessage('init', data: {
+      controller.postMessage(EventMessage.init({
         'url': 'https://gcore.jsdelivr.net/gh/misakafs/hotaru_server@master/assets/test.mp4',
       }));
+    });
+    controller.receiveMessage((evt) {
+      print("接收消息: ${evt.event}, ${evt.data}");
     });
   }
 
@@ -51,16 +41,7 @@ class _PlayerPageState extends State<PlayerPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('播放器', style: context.textTheme.titleMedium),
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
-            Icons.chevron_left_outlined,
-            color: Colors.black38,
-          ),
-        ),
+        title: const Text('播放器'),
       ),
       body: Container(
         width: double.infinity,
@@ -73,5 +54,3 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 }
-
-```

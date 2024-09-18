@@ -21,4 +21,6 @@ dev_dependencies:
 flutter:
   assets:
     - packages/hotaru_player/assets/index.html
+    - packages/hotaru_player/assets/index.js
+    - packages/hotaru_player/assets/index.css
 

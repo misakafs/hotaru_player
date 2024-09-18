@@ -6,11 +6,20 @@ export default defineConfig(({ mode }) => {
     const base: string = mode === 'flutter' ? '' : '/'
     const outDir: string = mode === 'flutter' ? '../../lib/assets' : 'dist'
     return {
-        plugins: [solid(), viteSingleFile()],
+        plugins: [solid()],
         base: base,
         build: {
             outDir: outDir,
-            emptyOutDir: true
-        }
+            emptyOutDir: true,
+            rollupOptions: {
+                output: {
+                    // 对于 JavaScript 文件
+                    entryFileNames: `index.js`,
+                    // 对于 CSS 文件
+                    assetFileNames: `index.css`,
+                },
+            },
+        },
+
     }
 })

@@ -14,7 +14,6 @@ function App() {
                 hp.listen(msg)
             }
         }
-
     })
 
     return (
