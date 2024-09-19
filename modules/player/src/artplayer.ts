@@ -17,28 +17,31 @@ export class HotaruPlayer {
                 fastForward: true,
                 autoOrientation: true,
                 fullscreen: true,
-                pip: true,
                 hotkey: true,
+                playbackRate: true,
+                aspectRatio: true,
                 lang: 'zh-cn',
                 theme: '#33d9b2',
                 plugins: [],
-                // customType: {
-                //     m3u8: function playM3u8(video, url, art) {
-                //         if (Hls.isSupported()) {
-                //             if (art.hls) art.hls.destroy();
-                //             const hls = new Hls();
-                //             hls.loadSource(url);
-                //             hls.attachMedia(video);
-                //             art.hls = hls;
-                //             art.on('destroy', () => hls.destroy());
-                //         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                //             video.src = url;
-                //         } else {
-                //             art.notice.show = 'Unsupported playback format: m3u8';
-                //         }
-                //     }
-                // },
-            })
+                customType: {
+                    m3u8: function playM3u8(video, url, art) {
+                        if (Hls.isSupported()) {
+                            if (art.hls) art.hls.destroy();
+                            const hls = new Hls();
+                            hls.loadSource(url);
+                            hls.attachMedia(video);
+                            art.hls = hls;
+                            art.on('destroy', () => hls.destroy());
+                        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                            video.src = url;
+                        } else {
+                            art.notice.show = 'Unsupported playback format: m3u8';
+                        }
+                    }
+                },
+            }, function onReady(art) {
+                art.play()
+            },)
 
             // Server?.postMessage(JSON.stringify({event: 'init', data: {'status': 'ok'}}))
 
