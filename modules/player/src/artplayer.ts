@@ -20,6 +20,7 @@ export class HotaruPlayer {
                 pip: true,
                 hotkey: true,
                 lang: 'zh-cn',
+                theme: '#33d9b2',
                 plugins: [],
                 // customType: {
                 //     m3u8: function playM3u8(video, url, art) {

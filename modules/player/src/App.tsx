@@ -9,6 +9,7 @@ function App() {
     onMount(() => {
         const hp = new HotaruPlayer()
 
+        // test: https://gcore.jsdelivr.net/gh/misakafs/hotaru_server@master/assets/test.mp4
         const url = new URLSearchParams(window.location.search).get('url')
 
         if (url) {
