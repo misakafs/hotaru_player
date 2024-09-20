@@ -2,6 +2,7 @@ import Artplayer from 'artplayer';
 import Hls from 'hls.js';
 
 
+
 export class HotaruPlayer {
     private player: Artplayer;
 
@@ -11,8 +12,10 @@ export class HotaruPlayer {
             this.player = new Artplayer({
                 container: '#vs',
                 url: data.url ?? '',
+                poster: data.poster ?? 'https://gcore.jsdelivr.net/gh/misakafs/hotaru_server@master/assets/bg.jpg',
                 setting: true,
                 miniProgressBar: true,
+                contextmenu: [],
                 lock: true,
                 fastForward: true,
                 autoOrientation: true,
