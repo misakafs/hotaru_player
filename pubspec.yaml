@@ -9,9 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  mime: ^1.0.5
-  webview_flutter: ^4.9.0
-  webview_flutter_android: ^3.16.6
+
+  audio_video_progress_bar: ^2.0.3
+
+  flutter_inappwebview: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -21,6 +22,4 @@ dev_dependencies:
 flutter:
   assets:
     - packages/hotaru_player/assets/index.html
-    - packages/hotaru_player/assets/index.js
-    - packages/hotaru_player/assets/index.css
 
