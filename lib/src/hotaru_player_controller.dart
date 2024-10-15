@@ -11,7 +11,7 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   final HotaruPlayerOption option;
 
   HotaruPlayerController({
-    required this.option,
+    this.option = const HotaruPlayerOption(),
   }) : super(HotaruPlayerValue());
 
   @override
@@ -37,8 +37,8 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   void init({
     String? url,
     String? poster,
-    bool? autoPlay,
-    bool? loop,
+    bool? autoPlay = true,
+    bool? loop = false,
   }) {
     final m = {
       'url': url,
@@ -46,6 +46,9 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
       'autoPlay': autoPlay,
       'loop': loop,
     };
+    if (url == null || url.isEmpty) {
+      return;
+    }
     value.webViewController?.evaluateJavascript(source: 'init(${const JsonEncoder().convert(m)})');
   }
 
