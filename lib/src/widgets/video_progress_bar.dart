@@ -15,12 +15,17 @@ class VideoProgressBar extends StatefulWidget {
 class _VideoProgressBarState extends State<VideoProgressBar> {
   late HotaruPlayerController _controller;
 
+  bool playing = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _controller = HotaruPlayerController.of(context)!;
     _controller.removeListener(listener);
     _controller.addListener(listener);
+    setState(() {
+      playing = _controller.value.playing;
+    });
   }
 
   @override
@@ -47,6 +52,24 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
       thumbColor: Colors.white,
       timeLabelTextStyle: const TextStyle(color: Colors.white),
       timeLabelPadding: 4,
+      onDragStart: (details) {
+        setState(() async {
+          playing = _controller.value.playing;
+
+          // 如果已经播放，则暂停
+          if (playing) {
+            await _controller.pause();
+          }
+        });
+      },
+      onDragUpdate: (details) async {
+        await _controller.seek(details.timeStamp);
+      },
+      onDragEnd: () async {
+        if (playing) {
+          await _controller.play();
+        }
+      },
     );
   }
 }

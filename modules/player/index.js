@@ -28,13 +28,19 @@ window.init = (option) => {
             playsInline: false,
             lang: 'zh-cn',
             moreVideoAttr: {
-                poster: 'noposter'
+                poster: 'noposter',
+                preload: 'auto',
             },
             customType: {
                 m3u8: function playM3u8(video, url, art) {
                     if (Hls.isSupported()) {
                         if (art.hls) art.hls.destroy()
-                        const hls = new Hls()
+                        const hls = new Hls({
+                            maxBufferLength: 60,
+                            maxMaxBufferLength: 120,
+                            maxBufferSize: 120 * 1000 * 1000,
+                            enableWorker: true,
+                        })
                         hls.loadSource(url)
                         hls.attachMedia(video)
                         art.hls = hls
@@ -49,6 +55,7 @@ window.init = (option) => {
         },
         function onReady(p) {
             p.play()
+            p.aspectRatio = '16:9'
             window.flutter_inappwebview.callHandler('Ready')
         }
     )
@@ -94,14 +101,16 @@ window.pause = () => {
     art?.pause()
 }
 
-// - [url]: 播放地址
-// - [poster]: 播放封面
-// - [t]: 播放开始位置
-// - [loop]: 循环播放
+// - [url]: 播放地址, string
+// - [poster]: 播放封面, string
+// - [t]: 播放开始位置, number
+// - [loop]: 循环播放, boolean
+// - [playbackRate]: 播放倍速，number
+// - [aspectRatio]: 视频纵横比，string，eg: '16:9'
+// - [flip]: 播放器翻转，'normal' | 'horizontal' | 'vertical'
 window.change = (obj) => {
 
-    const newObj = Object.assign({
-    }, obj)
+    const newObj = Object.assign({}, obj)
 
     if (newObj.hasOwnProperty('url') && newObj.url?.length) {
         art.switchUrl(newObj.url).then(r => {})
@@ -115,7 +124,15 @@ window.change = (obj) => {
     if (newObj.hasOwnProperty('t')) {
         art.seek = newObj.t
     }
-
+    if (newObj.hasOwnProperty('playbackRate')) {
+        art.playbackRate = newObj.playbackRate
+    }
+    if (newObj.hasOwnProperty('aspectRatio')) {
+        art.aspectRatio = newObj.aspectRatio
+    }
+    if (newObj.hasOwnProperty('flip')) {
+        art.aspectRatio = newObj.flip
+    }
 }
 
 // t - 秒，eg: 2.232

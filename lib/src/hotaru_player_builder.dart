@@ -39,6 +39,7 @@ class _HotaruPlayerBuilderState extends State<HotaruPlayerBuilder> with WidgetsB
   @override
   void didChangeMetrics() {
     final physicalSize = PlatformDispatcher.instance.views.first.physicalSize;
+
     final controller = widget.controller;
     if (physicalSize.width > physicalSize.height) {
       controller.updateValue(controller.value.copyWith(fullscreen: true));
@@ -53,12 +54,12 @@ class _HotaruPlayerBuilderState extends State<HotaruPlayerBuilder> with WidgetsB
   @override
   Widget build(BuildContext context) {
     final orientation = MediaQuery.orientationOf(context);
-    final height = MediaQuery.sizeOf(context).height;
+    final size = MediaQuery.sizeOf(context);
 
     /// 全屏
     final player = SizedBox(
       key: playerKey,
-      height: orientation == Orientation.landscape ? height : null,
+      height: orientation == Orientation.landscape ? size.height : null,
       child: PopScope(
         canPop: !widget.controller.value.fullscreen,
         onPopInvokedWithResult: (didPop, _) {

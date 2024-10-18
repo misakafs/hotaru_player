@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../hotaru_player_controller.dart';
+import '../utils/hotaru_utils.dart';
 
 /// 进度调节提示框
 class ProgressToast extends StatefulWidget {
@@ -45,18 +46,20 @@ class _ProgressToastState extends State<ProgressToast> {
             visible: _controller.value.showProgressToast,
             child: Container(
               height: 40,
-              width: 120,
+              width: _controller.value.exceedHour ? 150 : 120,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('01:10', style: TextStyle(color: Colors.white)),
-                  Text('/', style: TextStyle(color: Colors.white)),
-                  Text('11:10', style: TextStyle(color: Colors.white)),
+                  Text(HotaruUtils.formatDuration(_controller.value.position, _controller.value.exceedHour),
+                      style: const TextStyle(color: Colors.white)),
+                  const Text('/', style: TextStyle(color: Colors.white)),
+                  Text(HotaruUtils.formatDuration(_controller.value.duration, _controller.value.exceedHour),
+                      style: const TextStyle(color: Colors.white)),
                 ],
               ),
             ),

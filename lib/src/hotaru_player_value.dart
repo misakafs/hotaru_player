@@ -30,6 +30,24 @@ class HotaruPlayerValue {
   /// 总时长
   final Duration duration;
 
+  /// 时长是否超过一小时
+  final bool exceedHour;
+
+  /// 音量
+  final double volume;
+
+  /// 亮度
+  final double brightness;
+
+  /// 播放倍率
+  final PlaybackRates playbackRate;
+
+  /// 播放器纵横比
+  final AspectRatios aspectRatio;
+
+  /// 播放器翻转
+  final Flips flip;
+
   /// 展示上部区域控件
   final bool showTopControl;
 
@@ -59,6 +77,12 @@ class HotaruPlayerValue {
     this.position = Duration.zero,
     this.buffered = Duration.zero,
     this.duration = Duration.zero,
+    this.exceedHour = false,
+    this.volume = 0,
+    this.brightness = 0,
+    this.playbackRate = PlaybackRates.normal,
+    this.aspectRatio = AspectRatios.sixteenNine,
+    this.flip = Flips.normal,
     this.showTopControl = true,
     this.showBottomControl = true,
     this.showVolumeToast = false,
@@ -78,6 +102,12 @@ class HotaruPlayerValue {
     Duration? position,
     Duration? buffered,
     Duration? duration,
+    bool? exceedHour,
+    double? volume,
+    double? brightness,
+    PlaybackRates? playbackRate,
+    AspectRatios? aspectRatio,
+    Flips? flip,
     bool? showTopControl,
     bool? showBottomControl,
     bool? showVolumeToast,
@@ -95,6 +125,12 @@ class HotaruPlayerValue {
       position: position ?? this.position,
       buffered: buffered ?? this.buffered,
       duration: duration ?? this.duration,
+      exceedHour: exceedHour ?? this.exceedHour,
+      volume: volume ?? this.volume,
+      brightness: brightness ?? this.brightness,
+      playbackRate: playbackRate ?? this.playbackRate,
+      aspectRatio: aspectRatio ?? this.aspectRatio,
+      flip: flip ?? this.flip,
       showTopControl: showTopControl ?? this.showTopControl,
       showBottomControl: showBottomControl ?? this.showBottomControl,
       showVolumeToast: showVolumeToast ?? this.showVolumeToast,
@@ -114,6 +150,12 @@ class HotaruPlayerValue {
       'position': position,
       'buffered': buffered,
       'duration': duration,
+      'exceedHour': exceedHour,
+      'volume': volume,
+      'brightness': brightness,
+      'playbackRate': playbackRate,
+      'aspectRatio': aspectRatio,
+      'flip': flip,
       'showTopControl': showTopControl,
       'showBottomControl': showBottomControl,
       'showVolumeToast': showVolumeToast,
@@ -127,4 +169,42 @@ class HotaruPlayerValue {
   String toString() {
     return const JsonEncoder().convert(toJson());
   }
+}
+
+/// -------------------------------------------
+
+/// 播放倍率
+enum PlaybackRates {
+  half(0.5),
+  normal(1.0),
+  oneAndQuarter(1.25),
+  oneAndHalf(1.5),
+  twoTimes(2.0),
+  twoAndHalf(2.5),
+  triple(3.0);
+
+  final double value;
+
+  const PlaybackRates(this.value);
+}
+
+/// 播放器纵横比
+enum AspectRatios {
+  fourThree('4:3'),
+  sixteenNine('16:9');
+
+  final String value;
+
+  const AspectRatios(this.value);
+}
+
+/// 播放器翻转
+enum Flips {
+  normal('normal'),
+  horizontal('horizontal'),
+  vertical('vertical');
+
+  final String value;
+
+  const Flips(this.value);
 }

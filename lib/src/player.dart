@@ -64,6 +64,7 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
           allowsInlineMediaPlayback: true,
           allowsAirPlayForMediaPlayback: true,
           allowsPictureInPictureMediaPlayback: true,
+          useWideViewPort: false,
           useHybridComposition: true,
         ),
         onWebViewCreated: (webController) => onWebViewCreated(webController),
@@ -93,8 +94,12 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
           handlerName: 'Duration',
           callback: (args) {
             final int t = (args.first * 1000.0).floor();
+            final d = Duration(milliseconds: t);
             controller!.updateValue(
-              controller!.value.copyWith(duration: Duration(milliseconds: t)),
+              controller!.value.copyWith(
+                duration: d,
+                exceedHour: d.inHours > 0,
+              ),
             );
           })
       ..addJavaScriptHandler(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../hotaru_player_controller.dart';
+import '../utils/hotaru_utils.dart';
 
 /// 时间标签
 class TimeLabel extends StatefulWidget {
@@ -18,16 +19,12 @@ class TimeLabel extends StatefulWidget {
 class _TimeLabelState extends State<TimeLabel> {
   late HotaruPlayerController _controller;
 
-  late bool isHour;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _controller = HotaruPlayerController.of(context)!;
     _controller.removeListener(listener);
     _controller.addListener(listener);
-
-    isHour = _controller.value.duration.inHours > 0;
   }
 
   @override
@@ -40,20 +37,6 @@ class _TimeLabelState extends State<TimeLabel> {
     if (mounted) setState(() {});
   }
 
-  String formatDuration(Duration duration) {
-    int hours = duration.inHours;
-    int minutes = duration.inMinutes.remainder(60);
-    int seconds = duration.inSeconds.remainder(60);
-
-    if (isHour) {
-      // 格式化输出时:分:秒
-      return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-    } else {
-      // 格式化输出分:秒
-      return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
@@ -61,13 +44,14 @@ class _TimeLabelState extends State<TimeLabel> {
       child: Row(
         children: [
           Text(
-            formatDuration(_controller.value.position),
+            HotaruUtils.formatDuration(_controller.value.position, _controller.value.exceedHour),
             style: TextStyle(
               color: Colors.white,
               fontSize: widget.fontSize,
               fontWeight: FontWeight.w600,
             ),
           ),
+          const SizedBox(width: 1),
           Text(
             '/',
             style: TextStyle(
@@ -76,8 +60,9 @@ class _TimeLabelState extends State<TimeLabel> {
               fontWeight: FontWeight.w600,
             ),
           ),
+          const SizedBox(width: 1),
           Text(
-            formatDuration(_controller.value.duration),
+            HotaruUtils.formatDuration(_controller.value.duration, _controller.value.exceedHour),
             style: TextStyle(
               color: Colors.white,
               fontSize: widget.fontSize,

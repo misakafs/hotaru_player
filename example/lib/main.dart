@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:hotaru_player/hotaru_player.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
@@ -41,7 +43,9 @@ class _HomeState extends State<Home> {
     super.initState();
     controller = HotaruPlayerController(
       option: const HotaruPlayerOption(
-        url: 'https://gcore.jsdelivr.net/gh/misakafs/hotaru_server@master/assets/test.mp4',
+        url: 'https://vip.ffzy-video.com/20241015/4108_b2b7c555/index.m3u8',
+        autoPlay: false,
+        // url: 'https://gcore.jsdelivr.net/gh/misakafs/hotaru_server@master/assets/test.mp4',
       ),
     );
   }
@@ -59,26 +63,27 @@ class _HomeState extends State<Home> {
     final height = (screenWidth * (3 / 5)).floorToDouble() - 14;
 
     return HotaruPlayerBuilder(
-        controller: controller,
-        builder: (context, player) {
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: const SystemUiOverlayStyle(
-              // 设置状态栏背景颜色为黑色
-              statusBarColor: Colors.black,
-              // 确保状态栏文字为白色
-              statusBarBrightness: Brightness.dark,
-              // 确保状态栏图标为白色
-              statusBarIconBrightness: Brightness.light,
-            ),
-            child: Scaffold(
-              body: SafeArea(
-                child: SizedBox(
-                  height: height,
-                  child: player,
-                ),
+      controller: controller,
+      builder: (context, player) {
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: const SystemUiOverlayStyle(
+            // 设置状态栏背景颜色为黑色
+            statusBarColor: Colors.black,
+            // 确保状态栏文字为白色
+            statusBarBrightness: Brightness.dark,
+            // 确保状态栏图标为白色
+            statusBarIconBrightness: Brightness.light,
+          ),
+          child: Scaffold(
+            body: SafeArea(
+              child: SizedBox(
+                height: height,
+                child: player,
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

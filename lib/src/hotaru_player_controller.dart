@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:hotaru_player/src/hotaru_player_option.dart';
@@ -24,9 +25,9 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
     return context.dependOnInheritedWidgetOfExactType<InheritedHotaruPlayer>()?.controller;
   }
 
-  void _evaluateJavascript(String source) {
+  Future<void> _evaluateJavascript(String source) async {
     if (value.ready) {
-      value.webViewController?.evaluateJavascript(source: source);
+      await value.webViewController?.evaluateJavascript(source: source);
       return;
     }
     log('the player is not ready');
@@ -34,12 +35,12 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
 
   void updateValue(HotaruPlayerValue newValue) => value = newValue;
 
-  void init({
+  Future<void> init({
     String? url,
     String? poster,
-    bool? autoPlay = true,
+    bool? autoPlay = false,
     bool? loop = false,
-  }) {
+  }) async {
     final m = {
       'url': url,
       'poster': poster,
@@ -49,54 +50,72 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
     if (url == null || url.isEmpty) {
       return;
     }
-    value.webViewController?.evaluateJavascript(source: 'init(${const JsonEncoder().convert(m)})');
+    await value.webViewController?.evaluateJavascript(source: 'init(${const JsonEncoder().convert(m)})');
   }
 
   /// 播放器播放
-  void play() => _evaluateJavascript('play()');
+  Future<void> play() => _evaluateJavascript('play()');
 
   /// 播放器暂停
-  void pause() => _evaluateJavascript('pause()');
+  Future<void> pause() => _evaluateJavascript('pause()');
 
   /// 跳转到指定位置
-  void seek(Duration t) => _evaluateJavascript('seek(${t.inMilliseconds.toDouble() / 1000})');
+  Future<void> seek(Duration t) => _evaluateJavascript('seek(${t.inMilliseconds.toDouble() / 1000})');
 
-  void change({
+  Future<void> change({
     String? url,
     String? poster,
     Duration? t,
     bool? loop,
-  }) {
-    final m = {
-      'url': url,
-      'poster': poster,
-      'loop': loop,
-    };
+    PlaybackRates? playbackRate,
+    AspectRatios? aspectRatio,
+    Flips? flip,
+  }) async {
+    final m = {};
+    if (url != null && url.isNotEmpty) {
+      m['url'] = url;
+    }
+    if (poster != null && poster.isNotEmpty) {
+      m['poster'] = poster;
+    }
     if (t != null) {
       m['t'] = t.inMilliseconds.toDouble() / 1000;
     }
-
-    _evaluateJavascript('change(${const JsonEncoder().convert(m)})');
+    if (loop != null) {
+      m['loop'] = loop;
+    }
+    if (playbackRate != null) {
+      m['playbackRate'] = playbackRate.value;
+    }
+    if (aspectRatio != null) {
+      m['aspectRatio'] = aspectRatio.value;
+    }
+    if (flip != null) {
+      m['flip'] = flip.value;
+    }
+    await _evaluateJavascript('change(${const JsonEncoder().convert(m)})');
   }
 
-  void togglePlay() {
+  Future<void> togglePlay() async {
     updateValue(value.copyWith(playing: !value.playing));
     if (value.playing) {
-      play();
+      await play();
     } else {
-      pause();
+      await pause();
     }
   }
 
-  void toggleFullScreenMode() {
+  Future<void> toggleFullScreenMode() async {
     updateValue(value.copyWith(fullscreen: !value.fullscreen));
     if (value.fullscreen) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-      ]);
+      // SystemChrome.setPreferredOrientations([
+      //   DeviceOrientation.landscapeLeft,
+      //   DeviceOrientation.landscapeRight,
+      // ]);
+
+      await AutoOrientation.landscapeAutoMode(forceSensor: true);
     } else {
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     }
   }
 
