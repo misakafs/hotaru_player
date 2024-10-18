@@ -51,8 +51,11 @@ class _HotaruPlayerState extends State<HotaruPlayer> {
           clipBehavior: Clip.none,
           children: [
             // 播放器
-            Player(
-              key: widget.key,
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Player(
+                key: widget.key,
+              ),
             ),
             // 手势检测:
             // 单击：展示控件，3秒后自动隐藏控件，再次单击隐藏控件

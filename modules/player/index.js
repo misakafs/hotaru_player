@@ -55,7 +55,6 @@ window.init = (option) => {
         },
         function onReady(p) {
             p.play()
-            p.aspectRatio = '16:9'
             window.flutter_inappwebview.callHandler('Ready')
         }
     )
