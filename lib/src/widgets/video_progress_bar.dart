@@ -63,6 +63,9 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
         });
       },
       onDragUpdate: (details) async {
+        _controller.updateValue(_controller.value.copyWith(
+          position: details.timeStamp,
+        ));
         await _controller.seek(details.timeStamp);
       },
       onDragEnd: () async {

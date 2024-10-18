@@ -38,6 +38,7 @@ class _VideoBottomBarState extends State<VideoBottomBar> {
   Widget _buildFullscreenBottomBar() {
     return Container(
       height: 104,
+      padding: const EdgeInsets.symmetric(horizontal: 28),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [

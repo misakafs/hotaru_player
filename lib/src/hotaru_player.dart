@@ -51,10 +51,12 @@ class _HotaruPlayerState extends State<HotaruPlayer> {
           clipBehavior: Clip.none,
           children: [
             // 播放器
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Player(
-                key: widget.key,
+            Center(
+              child: SizedBox(
+                width: controller.value.fullscreen ? MediaQuery.sizeOf(context).width * 1 : null,
+                child: Player(
+                  key: widget.key,
+                ),
               ),
             ),
             // 手势检测:

@@ -48,6 +48,9 @@ class HotaruPlayerValue {
   /// 播放器翻转
   final Flips flip;
 
+  /// 播放器缩放比例，默认是1
+  final double playerRate;
+
   /// 展示上部区域控件
   final bool showTopControl;
 
@@ -83,6 +86,7 @@ class HotaruPlayerValue {
     this.playbackRate = PlaybackRates.normal,
     this.aspectRatio = AspectRatios.sixteenNine,
     this.flip = Flips.normal,
+    this.playerRate = 1,
     this.showTopControl = true,
     this.showBottomControl = true,
     this.showVolumeToast = false,
@@ -108,6 +112,7 @@ class HotaruPlayerValue {
     PlaybackRates? playbackRate,
     AspectRatios? aspectRatio,
     Flips? flip,
+    double? playerRate,
     bool? showTopControl,
     bool? showBottomControl,
     bool? showVolumeToast,
@@ -131,6 +136,7 @@ class HotaruPlayerValue {
       playbackRate: playbackRate ?? this.playbackRate,
       aspectRatio: aspectRatio ?? this.aspectRatio,
       flip: flip ?? this.flip,
+      playerRate: playerRate ?? this.playerRate,
       showTopControl: showTopControl ?? this.showTopControl,
       showBottomControl: showBottomControl ?? this.showBottomControl,
       showVolumeToast: showVolumeToast ?? this.showVolumeToast,
@@ -156,6 +162,7 @@ class HotaruPlayerValue {
       'playbackRate': playbackRate,
       'aspectRatio': aspectRatio,
       'flip': flip,
+      'playerRate': playerRate,
       'showTopControl': showTopControl,
       'showBottomControl': showBottomControl,
       'showVolumeToast': showVolumeToast,

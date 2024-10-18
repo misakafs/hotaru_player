@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../hotaru_player_controller.dart';
 
+const _padding = EdgeInsets.only(top: 4, left: 8, right: 8);
+const _fullscreenPadding = EdgeInsets.only(top: 4, left: 28, right: 28);
+
 /// 顶部控件
 class VideoTopBar extends StatefulWidget {
   const VideoTopBar({super.key});
@@ -42,7 +45,7 @@ class _VideoTopBarState extends State<VideoTopBar> {
         duration: const Duration(milliseconds: 200),
         child: Container(
           height: 60,
-          padding: const EdgeInsets.only(top: 4, left: 8, right: 8),
+          padding: _controller.value.fullscreen ? _fullscreenPadding : _padding,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
