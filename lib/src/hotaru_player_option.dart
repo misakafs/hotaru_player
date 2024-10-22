@@ -8,6 +8,9 @@ class HotaruPlayerOption {
   /// 是否循环播放，默认：false
   final bool loop;
 
+  /// 后台播放
+  final bool backendPlayback;
+
   /// 开始播放位置，默认：0
   final Duration position;
 
@@ -17,12 +20,17 @@ class HotaruPlayerOption {
   /// 播放封面，默认：''
   final String poster;
 
+  /// 启用混合渲染
+  final bool enableHybridComposition;
+
   const HotaruPlayerOption({
     this.hideControls = false,
     this.autoPlay = true,
     this.loop = false,
+    this.backendPlayback = true,
     this.position = Duration.zero,
     this.url = '',
     this.poster = '',
+    this.enableHybridComposition = true,
   });
 }

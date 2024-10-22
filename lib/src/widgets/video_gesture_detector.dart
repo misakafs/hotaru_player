@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
+import 'package:hotaru_player/src/hotaru_player_value.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
 import '../hotaru_player_controller.dart';
@@ -90,12 +91,18 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
 
   // 处理长按事件
   void _onLongPressStart(LongPressStartDetails details) {
+    _controller.change(
+      playbackRate: PlaybackRates.triple,
+    );
     _controller.updateValue(_controller.value.copyWith(
       showSpeedToast: true,
     ));
   }
 
   void _onLongPressEnd(LongPressEndDetails details) {
+    _controller.change(
+      playbackRate: _controller.value.playbackRate,
+    );
     _controller.updateValue(_controller.value.copyWith(
       showSpeedToast: false,
     ));

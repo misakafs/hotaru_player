@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 import 'hotaru_player.dart';
 import 'hotaru_player_controller.dart';
@@ -28,6 +30,19 @@ class _HotaruPlayerBuilderState extends State<HotaruPlayerBuilder> with WidgetsB
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    init();
+  }
+
+  Future<void> init() async {
+    // 获取屏幕亮度
+    final brightness = await ScreenBrightness.instance.application;
+    // 获取音量
+    final volume = await FlutterVolumeController.getVolume();
+
+    widget.controller.updateValue(widget.controller.value.copyWith(
+      brightness: brightness,
+      volume: volume,
+    ));
   }
 
   @override

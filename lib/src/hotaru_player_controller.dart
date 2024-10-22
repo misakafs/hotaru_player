@@ -11,8 +11,11 @@ import 'hotaru_player_value.dart';
 class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   final HotaruPlayerOption option;
 
+  final VoidCallback? onReady;
+
   HotaruPlayerController({
     this.option = const HotaruPlayerOption(),
+    this.onReady,
   }) : super(HotaruPlayerValue());
 
   @override
@@ -38,19 +41,37 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   Future<void> init({
     String? url,
     String? poster,
-    bool? autoPlay = false,
-    bool? loop = false,
+    bool? autoPlay,
+    bool? loop,
+    Duration? position,
   }) async {
-    final m = {
-      'url': url,
-      'poster': poster,
-      'autoPlay': autoPlay,
-      'loop': loop,
-    };
     if (url == null || url.isEmpty) {
       return;
     }
-    await value.webViewController?.evaluateJavascript(source: 'init(${const JsonEncoder().convert(m)})');
+
+    final Map<String, dynamic> m = {
+      'url': url,
+    };
+
+    if (poster != null && poster.isNotEmpty) {
+      m['poster'] = poster;
+    }
+
+    if (autoPlay != null) {
+      m['autoPlay'] = autoPlay;
+    }
+
+    if (loop != null) {
+      m['loop'] = loop;
+    }
+
+    if (position != null) {
+      m['seek'] = position.inMilliseconds.toDouble() / 1000;
+    }
+
+    final obj = const JsonEncoder().convert(m);
+
+    await value.webViewController?.evaluateJavascript(source: 'init($obj)');
   }
 
   /// 播放器播放
@@ -65,7 +86,7 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   Future<void> change({
     String? url,
     String? poster,
-    Duration? t,
+    Duration? position,
     bool? loop,
     PlaybackRates? playbackRate,
     AspectRatios? aspectRatio,
@@ -78,8 +99,8 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
     if (poster != null && poster.isNotEmpty) {
       m['poster'] = poster;
     }
-    if (t != null) {
-      m['t'] = t.inMilliseconds.toDouble() / 1000;
+    if (position != null) {
+      m['seek'] = position.inMilliseconds.toDouble() / 1000;
     }
     if (loop != null) {
       m['loop'] = loop;

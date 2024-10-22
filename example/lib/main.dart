@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hotaru_player/hotaru_player.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,23 +36,56 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
-  late HotaruPlayerController controller;
+class _HomeState extends State<Home> with WidgetsBindingObserver {
+  late final HotaruPlayerController controller;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     controller = HotaruPlayerController(
-      option: const HotaruPlayerOption(
-        url: 'https://vip.ffzy-video.com/20241012/3983_5e4450dc/index.m3u8',
-      ),
+      onReady: () async {
+        await _initState();
+      },
     );
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      // 应用进入后台或暂停时保存数据
+      _dispose();
+    }
+  }
+
+  Future<void> _initState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getInt('record');
+
+    Duration position = Duration.zero;
+
+    if (value != null) {
+      position = Duration(milliseconds: value);
+    }
+    controller.init(
+      url: 'https://vip.ffzy-play6.com/20240910/29101_0c61127c/index.m3u8',
+      position: position,
+      loop: false,
+    );
+  }
+
+  /// 应用关闭的时候去记录一下视频播放到了哪里
+  Future<void> _dispose() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = controller.value.position.inMilliseconds;
+    await prefs.setInt('record', value);
   }
 
   @override

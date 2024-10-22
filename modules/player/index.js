@@ -11,11 +11,11 @@ window.init = (option) => {
         {
             container: '#app',
             url: option.url,
-            poster: option.poster ?? '',
+            poster: option?.poster ?? '',
             volume: 1,
             muted: false,
-            autoplay: option.autoPlay ?? false,
-            loop: option.loop ?? false,
+            autoplay: option?.autoPlay ?? false,
+            loop: option?.loop ?? false,
             setting: false,
             miniProgressBar: false,
             lock: false,
@@ -54,6 +54,9 @@ window.init = (option) => {
             }
         },
         function onReady(p) {
+            if (option?.seek) {
+                p.seek = option.seek
+            }
             p.play()
             window.flutter_inappwebview.callHandler('Ready')
         }
@@ -102,7 +105,7 @@ window.pause = () => {
 
 // - [url]: 播放地址, string
 // - [poster]: 播放封面, string
-// - [t]: 播放开始位置, number
+// - [seek]: 播放开始位置, number
 // - [loop]: 循环播放, boolean
 // - [playbackRate]: 播放倍速，number
 // - [aspectRatio]: 视频纵横比，string，eg: '16:9'
@@ -120,8 +123,8 @@ window.change = (obj) => {
     if (newObj.hasOwnProperty('loop')) {
         art.loop = newObj.loop
     }
-    if (newObj.hasOwnProperty('t')) {
-        art.seek = newObj.t
+    if (newObj.hasOwnProperty('seek')) {
+        art.seek = newObj.seek
     }
     if (newObj.hasOwnProperty('playbackRate')) {
         art.playbackRate = newObj.playbackRate

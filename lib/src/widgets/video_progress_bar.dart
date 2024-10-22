@@ -54,13 +54,13 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
       timeLabelTextStyle: const TextStyle(color: Colors.white),
       timeLabelPadding: 4,
       onDragStart: (details) {
-        setState(() async {
+        setState(() {
           playing = _controller.value.playing;
           timeStamp = details.timeStamp;
 
           // 如果已经播放，则暂停
           if (playing) {
-            await _controller.pause();
+            _controller.pause();
           }
         });
       },
