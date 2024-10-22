@@ -35,16 +35,13 @@ class _FullscreenButtonState extends State<FullscreenButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: !_controller.value.fullscreen,
-      child: IconButton(
-        icon: const Icon(
-          Icons.fullscreen_rounded,
-          color: Colors.white,
-          size: 28,
-        ),
-        onPressed: () => _controller.toggleFullScreenMode(),
+    return IconButton(
+      icon: Icon(
+        _controller.value.fullscreen ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded,
+        color: Colors.white,
+        size: _controller.value.fullscreen ? 30 : 28,
       ),
+      onPressed: () => _controller.toggleFullScreenMode(),
     );
   }
 }

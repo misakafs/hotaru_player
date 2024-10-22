@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
 import '../hotaru_player_controller.dart';
 
@@ -46,7 +48,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
       return;
     }
 
-    _timer = Timer(const Duration(seconds: 3), () {
+    _timer = Timer(const Duration(seconds: 5), () {
       if (_controller.value.playing) {
         _controller.updateValue(
           _controller.value.copyWith(
@@ -101,8 +103,9 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
 
   //
   void _onVerticalDragStart(DragStartDetails details) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double tapPosition = details.globalPosition.dx;
+    final size = MediaQuery.sizeOf(context);
+    final screenWidth = size.width;
+    final tapPosition = details.globalPosition.dx;
 
     if (tapPosition < screenWidth / 2) {
       // 左侧上下滑动调节屏幕亮度
@@ -118,22 +121,37 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
   }
 
   // 处理滑动事件
-  void _onVerticalDragUpdate(DragUpdateDetails details) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double tapPosition = details.globalPosition.dx;
+  void _onVerticalDragUpdate(DragUpdateDetails details) async {
+    final renderBox = context.findRenderObject() as RenderBox;
+    final size = MediaQuery.sizeOf(context);
+    final screenWidth = size.width;
+    final tapPosition = details.globalPosition.dx;
+    // 滑动的垂直距离
+    final dragDistance = details.delta.dy;
 
     if (tapPosition < screenWidth / 2) {
       // 左侧上下滑动调节屏幕亮度
       // 这里需要使用实际的亮度调节逻辑
+      final brightness = (_controller.value.brightness - dragDistance / renderBox.size.height).clamp(0, 1).toDouble();
+      _controller.updateValue(_controller.value.copyWith(
+        brightness: brightness,
+      ));
+      await ScreenBrightness.instance.setApplicationScreenBrightness(brightness);
     } else {
       // 右侧上下滑动调节音量
       // 这里需要使用实际的音量调节逻辑
+      final volume = (_controller.value.volume - dragDistance / renderBox.size.height).clamp(0, 1).toDouble();
+      _controller.updateValue(_controller.value.copyWith(
+        volume: volume,
+      ));
+      await FlutterVolumeController.setVolume(volume);
     }
   }
 
   void _onVerticalDragEnd(DragEndDetails details) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double tapPosition = details.globalPosition.dx;
+    final size = MediaQuery.sizeOf(context);
+    final screenWidth = size.width;
+    final tapPosition = details.globalPosition.dx;
 
     if (tapPosition < screenWidth / 2) {
       // 左侧上下滑动调节屏幕亮度

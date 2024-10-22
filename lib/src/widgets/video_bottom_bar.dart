@@ -49,9 +49,9 @@ class _VideoBottomBarState extends State<VideoBottomBar> {
           end: Alignment.topCenter,
         ),
       ),
-      child: Column(
+      child: const Column(
         children: [
-          const Row(
+          Row(
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 16),
@@ -59,8 +59,8 @@ class _VideoBottomBarState extends State<VideoBottomBar> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          const Row(
+          SizedBox(height: 12),
+          Row(
             children: [
               Expanded(
                 child: Padding(
@@ -73,17 +73,8 @@ class _VideoBottomBarState extends State<VideoBottomBar> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const PlayPauseButton(),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  '倍速',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              PlayPauseButton(),
+              FullscreenButton(),
             ],
           ),
         ],

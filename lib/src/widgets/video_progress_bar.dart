@@ -16,6 +16,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
   late HotaruPlayerController _controller;
 
   bool playing = false;
+  Duration? timeStamp;
 
   @override
   void didChangeDependencies() {
@@ -55,6 +56,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
       onDragStart: (details) {
         setState(() async {
           playing = _controller.value.playing;
+          timeStamp = details.timeStamp;
 
           // 如果已经播放，则暂停
           if (playing) {
@@ -63,12 +65,26 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
         });
       },
       onDragUpdate: (details) async {
+        if (timeStamp != null) {
+          setState(() {
+            timeStamp = null;
+          });
+        }
         _controller.updateValue(_controller.value.copyWith(
           position: details.timeStamp,
         ));
         await _controller.seek(details.timeStamp);
       },
       onDragEnd: () async {
+        if (timeStamp != null) {
+          _controller.updateValue(_controller.value.copyWith(
+            position: timeStamp,
+          ));
+          await _controller.seek(timeStamp!);
+          setState(() {
+            timeStamp = null;
+          });
+        }
         if (playing) {
           await _controller.play();
         }

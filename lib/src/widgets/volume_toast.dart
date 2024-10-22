@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 
 import '../hotaru_player_controller.dart';
 
@@ -12,6 +13,12 @@ class VolumeToast extends StatefulWidget {
 
 class _VolumeToastState extends State<VolumeToast> {
   late HotaruPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    FlutterVolumeController.updateShowSystemUI(false);
+  }
 
   @override
   void didChangeDependencies() {
@@ -54,7 +61,11 @@ class _VolumeToastState extends State<VolumeToast> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Icon(Icons.volume_up_rounded, color: Colors.white, size: 28),
+                  Icon(
+                    _controller.value.volume == 0 ? Icons.volume_mute_rounded : Icons.volume_up_rounded,
+                    color: Colors.white,
+                    size: 28,
+                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: SliderTheme(
@@ -65,7 +76,7 @@ class _VolumeToastState extends State<VolumeToast> {
                         trackHeight: 2,
                       ),
                       child: Slider(
-                        value: 0.5,
+                        value: _controller.value.volume,
                         min: 0.0,
                         max: 1.0,
                         activeColor: Theme.of(context).colorScheme.primary,

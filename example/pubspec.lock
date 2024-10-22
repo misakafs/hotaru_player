@@ -252,10 +252,10 @@ packages:
     dependency: transitive
     description:
       name: screen_brightness
-      sha256: "970d1cc68f8ed7bf3a539924a3cd51c06af138bbf345b6daa4af8ce4e8527ebf"
+      sha256: a43fdbccd5b90044f68057412dde7715cd7499a4c24f5d5da7e01ed4cf41e0af
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0+1"
+    version: "2.0.0+2"
   screen_brightness_android:
     dependency: transitive
     description:

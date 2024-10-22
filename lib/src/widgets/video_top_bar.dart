@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotaru_player/src/widgets/video_setting.dart';
 
 import '../hotaru_player_controller.dart';
 
@@ -71,7 +72,9 @@ class _VideoTopBarState extends State<VideoTopBar> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  openVideoSetting(context);
+                },
                 icon: const Icon(
                   Icons.more_vert_rounded,
                   color: Colors.white,

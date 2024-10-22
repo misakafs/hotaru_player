@@ -38,7 +38,7 @@ window.init = (option) => {
                         const hls = new Hls({
                             maxBufferLength: 60,
                             maxMaxBufferLength: 120,
-                            maxBufferSize: 120 * 1000 * 1000,
+                            maxBufferSize: 120 * 1024 * 1024,
                             enableWorker: true,
                         })
                         hls.loadSource(url)
@@ -111,10 +111,10 @@ window.change = (obj) => {
 
     const newObj = Object.assign({}, obj)
 
-    if (newObj.hasOwnProperty('url') && newObj.url?.length) {
+    if (newObj.hasOwnProperty('url')) {
         art.switchUrl(newObj.url).then(r => {})
     }
-    if (newObj.hasOwnProperty('poster') && newObj.poster?.length) {
+    if (newObj.hasOwnProperty('poster')) {
         art.poster = newObj.poster
     }
     if (newObj.hasOwnProperty('loop')) {

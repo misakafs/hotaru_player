@@ -43,9 +43,7 @@ class _HomeState extends State<Home> {
     super.initState();
     controller = HotaruPlayerController(
       option: const HotaruPlayerOption(
-        url: 'https://vip.ffzy-video.com/20241015/4108_b2b7c555/index.m3u8',
-        autoPlay: false,
-        // url: 'https://gcore.jsdelivr.net/gh/misakafs/hotaru_server@master/assets/test.mp4',
+        url: 'https://vip.ffzy-video.com/20241012/3983_5e4450dc/index.m3u8',
       ),
     );
   }

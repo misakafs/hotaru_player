@@ -56,6 +56,8 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
         initialSettings: InAppWebViewSettings(
           userAgent: '',
           mediaPlaybackRequiresUserGesture: false,
+          // 允许后台播放
+          allowBackgroundAudioPlaying: true,
           transparentBackground: true,
           disableContextMenu: true,
           supportZoom: false,

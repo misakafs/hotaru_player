@@ -54,7 +54,11 @@ class _BrightnessToastState extends State<BrightnessToast> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Icon(Icons.wb_sunny_rounded, color: Colors.white, size: 28),
+                  Icon(
+                    _controller.value.brightness == 0 ? Icons.brightness_1_rounded : Icons.wb_sunny_rounded,
+                    color: Colors.white,
+                    size: 28,
+                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: SliderTheme(
@@ -65,7 +69,7 @@ class _BrightnessToastState extends State<BrightnessToast> {
                         trackHeight: 2,
                       ),
                       child: Slider(
-                        value: 0.5,
+                        value: _controller.value.brightness,
                         min: 0.0,
                         max: 1.0,
                         activeColor: Theme.of(context).colorScheme.primary,

@@ -21,3 +21,9 @@
     </style>
 </resources>
 ```
+
+2. 设置屏幕亮度和音量，需要提供下面的权限
+
+```xml
+<uses-permission android:name="android.permission.WRITE_SETTINGS" />
+```
