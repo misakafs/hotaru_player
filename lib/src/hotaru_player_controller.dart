@@ -4,23 +4,86 @@ import 'dart:developer';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:hotaru_player/src/hotaru_player_option.dart';
 
 import 'hotaru_player_value.dart';
 
 class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
-  final HotaruPlayerOption option;
+  /// 播放地址
+  /// 默认：''
+  final String url;
+
+  /// 播放封面
+  /// 默认：''
+  final String poster;
+
+  /// 自动播放
+  /// 默认: true
+  final bool autoPlay;
+
+  /// 后台播放
+  /// 默认: true
+  final bool backendPlayback;
+
+  /// 开始播放位置
+  /// 默认：0
+  final Duration position;
+
+  /// 播放方式：stop - 播放完暂停; loop - 循环播放; next - 播放完执行onNext函数
+  /// 默认: stop
+  final PlayMode playMode;
+
+  /// 播放倍率
+  /// 默认: 1.0
+  final double playbackRate;
+
+  /// 快进倍率
+  /// 默认: 2.0
+  final double speedRate;
+
+  /// 镜像翻转: normal - 正常; horizontal - 水平翻转; vertical - 上下翻转
+  /// 默认: normal
+  final Flip flip;
+
+  /// 画面比例，例子: '16:9', '4:3'
+  /// 默认: ''
+  final String aspectRatio;
+
+  /// 启用混合渲染
+  /// 默认: true
+  final bool enableHybridComposition;
 
   final VoidCallback? onReady;
   final VoidCallback? onEnded;
+  final VoidCallback? onNext;
   final VoidCallback? onExit;
 
   HotaruPlayerController({
-    this.option = const HotaruPlayerOption(),
+    this.url = '',
+    this.poster = '',
+    this.autoPlay = true,
+    this.backendPlayback = true,
+    this.position = Duration.zero,
+    this.playMode = PlayMode.stop,
+    this.playbackRate = 1.0,
+    this.speedRate = 2.0,
+    this.flip = Flip.normal,
+    this.aspectRatio = '',
+    this.enableHybridComposition = true,
     this.onReady,
     this.onEnded,
+    this.onNext,
     this.onExit,
-  }) : super(HotaruPlayerValue());
+  }) : super(
+          HotaruPlayerValue(
+            backendPlayback: backendPlayback,
+            position: position,
+            playMode: playMode,
+            playbackRate: playbackRate,
+            speedRate: speedRate,
+            flip: flip,
+            aspectRatio: aspectRatio,
+          ),
+        );
 
   @override
   void dispose() {
@@ -46,8 +109,11 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
     String? url,
     String? poster,
     bool? autoPlay,
-    bool? loop,
     Duration? position,
+    PlayMode? playMode,
+    double? playbackRate,
+    Flip? flip,
+    String? aspectRatio,
   }) async {
     if (url == null || url.isEmpty) {
       return;
@@ -65,12 +131,28 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
       m['autoPlay'] = autoPlay;
     }
 
-    if (loop != null) {
-      m['loop'] = loop;
+    if (playMode != null) {
+      if (playMode == PlayMode.loop) {
+        m['loop'] = true;
+      } else {
+        m['loop'] = false;
+      }
     }
 
     if (position != null) {
       m['seek'] = position.inMilliseconds.toDouble() / 1000;
+    }
+
+    if (playbackRate != null) {
+      m['playbackRate'] = playbackRate;
+    }
+
+    if (flip != null) {
+      m['flip'] = flip.value;
+    }
+
+    if (aspectRatio != null) {
+      m['aspectRatio'] = aspectRatio;
     }
 
     final obj = const JsonEncoder().convert(m);
@@ -91,10 +173,10 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
     String? url,
     String? poster,
     Duration? position,
-    bool? loop,
+    PlayMode? playMode,
     double? playbackRate,
     String? aspectRatio,
-    Flips? flip,
+    Flip? flip,
   }) async {
     final m = {};
     if (url != null && url.isNotEmpty) {
@@ -106,8 +188,12 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
     if (position != null) {
       m['seek'] = position.inMilliseconds.toDouble() / 1000;
     }
-    if (loop != null) {
-      m['loop'] = loop;
+    if (playMode != null) {
+      if (playMode == PlayMode.loop) {
+        m['loop'] = true;
+      } else {
+        m['loop'] = false;
+      }
     }
     if (playbackRate != null) {
       m['playbackRate'] = playbackRate;

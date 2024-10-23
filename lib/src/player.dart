@@ -29,25 +29,27 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    controller = HotaruPlayerController.of(context);
+
     switch (state) {
       case AppLifecycleState.resumed:
         // 表示应用是可见的，并且处于前台活动状态。用户可以与屏幕交互
         break;
 
-      case AppLifecycleState.inactive:
-        // 表示应用处于非活动状态，但仍然可见。这种情况可能发生在用户接收到来电或者应用被另一个临时界面（如弹出对话框）覆盖时
-        break;
-
-      case AppLifecycleState.paused:
-        // 表示应用目前不可见，已经进入后台，但仍然处于内存中。这通常发生在用户切换到另一个应用或者点击了主页按钮
-        break;
-      case AppLifecycleState.hidden:
-        // 这个状态在 iOS 设备上使用，表示应用已经被完全遮盖，对用户不可见。这通常发生在用户锁定了屏幕或者应用被其他全屏应用遮盖。
-        break;
-      case AppLifecycleState.detached:
-        // 表示应用正在从当前设备上分离，这通常发生在应用即将被销毁时。
-        // 这个状态在 Android 设备上不常见，因为它通常与操作系统如何管理应用生命周期的方式有关。
-        break;
+      // case AppLifecycleState.inactive:
+      //   // 表示应用处于非活动状态，但仍然可见。这种情况可能发生在用户接收到来电或者应用被另一个临时界面（如弹出对话框）覆盖时
+      //   break;
+      //
+      // case AppLifecycleState.paused:
+      //   // 表示应用目前不可见，已经进入后台，但仍然处于内存中。这通常发生在用户切换到另一个应用或者点击了主页按钮
+      //   break;
+      // case AppLifecycleState.hidden:
+      //   // 这个状态在 iOS 设备上使用，表示应用已经被完全遮盖，对用户不可见。这通常发生在用户锁定了屏幕或者应用被其他全屏应用遮盖。
+      //   break;
+      // case AppLifecycleState.detached:
+      //   // 表示应用正在从当前设备上分离，这通常发生在应用即将被销毁时。
+      //   // 这个状态在 Android 设备上不常见，因为它通常与操作系统如何管理应用生命周期的方式有关。
+      //   break;
       default:
     }
   }
@@ -65,7 +67,7 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
           userAgent: '',
           mediaPlaybackRequiresUserGesture: false,
           // 允许后台播放
-          allowBackgroundAudioPlaying: true,
+          allowBackgroundAudioPlaying: controller?.value.backendPlayback,
           transparentBackground: true,
           disableContextMenu: true,
           supportZoom: false,
@@ -75,7 +77,7 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
           allowsAirPlayForMediaPlayback: true,
           allowsPictureInPictureMediaPlayback: true,
           useWideViewPort: false,
-          useHybridComposition: controller?.option.enableHybridComposition,
+          useHybridComposition: controller?.enableHybridComposition,
         ),
         onWebViewCreated: (webController) => onWebViewCreated(webController),
         onLoadStop: (_, __) => onLoadStop(),
@@ -155,11 +157,13 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
       controller!.onReady!();
     }
     controller!.init(
-      url: controller?.option.url,
-      poster: controller?.option.poster,
-      autoPlay: controller?.option.autoPlay,
-      loop: controller?.option.loop,
-      position: controller?.option.position,
+      url: controller?.url,
+      poster: controller?.poster,
+      autoPlay: controller?.autoPlay,
+      position: controller?.value.position,
+      playbackRate: controller?.value.playbackRate,
+      flip: controller?.value.flip,
+      aspectRatio: controller?.value.aspectRatio,
     );
   }
 }

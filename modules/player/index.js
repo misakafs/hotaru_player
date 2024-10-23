@@ -14,7 +14,7 @@ window.init = (option) => {
             poster: option?.poster ?? '',
             volume: 1,
             muted: false,
-            autoplay: option?.autoPlay ?? false,
+            autoplay: option?.autoPlay ?? true,
             loop: option?.loop ?? false,
             setting: false,
             miniProgressBar: false,
@@ -56,6 +56,15 @@ window.init = (option) => {
         function onReady(p) {
             if (option?.seek) {
                 p.seek = option.seek
+            }
+            if (option?.playbackRate) {
+                p.playbackRate = option.playbackRate
+            }
+            if (option?.flip) {
+                p.flip = option.flip
+            }
+            if (option?.aspectRatio) {
+                p.aspectRatio = option.aspectRatio
             }
             p.play()
             window.flutter_inappwebview.callHandler('Ready')
@@ -133,7 +142,7 @@ window.change = (obj) => {
         art.aspectRatio = newObj.aspectRatio
     }
     if (newObj.hasOwnProperty('flip')) {
-        art.aspectRatio = newObj.flip
+        art.flip = newObj.flip
     }
 }
 

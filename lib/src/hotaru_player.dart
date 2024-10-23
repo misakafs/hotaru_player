@@ -53,7 +53,7 @@ class _HotaruPlayerState extends State<HotaruPlayer> {
             // 播放器
             Center(
               child: SizedBox(
-                width: controller.value.fullscreen ? MediaQuery.sizeOf(context).width * 1 : null,
+                width: controller.value.fullscreen ? MediaQuery.sizeOf(context).width : null,
                 child: Player(
                   key: widget.key,
                 ),

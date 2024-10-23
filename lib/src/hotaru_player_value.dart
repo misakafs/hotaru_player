@@ -40,16 +40,27 @@ class HotaruPlayerValue {
   final double brightness;
 
   /// 播放倍率
+  /// 默认: 1.0
   final double playbackRate;
 
-  /// 播放器纵横比
+  /// 快进倍率，默认: 2.0
+  final double speedRate;
+
+  /// 画面比例，例子: '16:9', '4:3'
+  /// 默认: ''
   final String aspectRatio;
 
-  /// 播放器翻转
-  final Flips flip;
+  /// 后台播放
+  /// 默认: true
+  final bool backendPlayback;
 
-  /// 播放器缩放比例，默认是1
-  final double playerRate;
+  /// 播放方式：stop - 播放完暂停; loop - 循环播放; next - 播放完执行onNext函数
+  /// 默认: stop
+  final PlayMode playMode;
+
+  /// 镜像翻转: normal - 正常; horizontal - 水平翻转; vertical - 上下翻转
+  /// 默认: normal
+  final Flip flip;
 
   /// 展示上部区域控件
   final bool showTopControl;
@@ -84,9 +95,11 @@ class HotaruPlayerValue {
     this.volume = 0.5,
     this.brightness = 0.5,
     this.playbackRate = 1.0,
+    this.speedRate = 2.0,
     this.aspectRatio = '',
-    this.flip = Flips.normal,
-    this.playerRate = 1,
+    this.backendPlayback = true,
+    this.playMode = PlayMode.stop,
+    this.flip = Flip.normal,
     this.showTopControl = true,
     this.showBottomControl = true,
     this.showVolumeToast = false,
@@ -110,9 +123,11 @@ class HotaruPlayerValue {
     double? volume,
     double? brightness,
     double? playbackRate,
+    double? speedRate,
     String? aspectRatio,
-    Flips? flip,
-    double? playerRate,
+    bool? backendPlayback,
+    PlayMode? playMode,
+    Flip? flip,
     bool? showTopControl,
     bool? showBottomControl,
     bool? showVolumeToast,
@@ -134,9 +149,11 @@ class HotaruPlayerValue {
       volume: volume ?? this.volume,
       brightness: brightness ?? this.brightness,
       playbackRate: playbackRate ?? this.playbackRate,
+      speedRate: speedRate ?? this.speedRate,
       aspectRatio: aspectRatio ?? this.aspectRatio,
+      backendPlayback: backendPlayback ?? this.backendPlayback,
+      playMode: playMode ?? this.playMode,
       flip: flip ?? this.flip,
-      playerRate: playerRate ?? this.playerRate,
       showTopControl: showTopControl ?? this.showTopControl,
       showBottomControl: showBottomControl ?? this.showBottomControl,
       showVolumeToast: showVolumeToast ?? this.showVolumeToast,
@@ -160,9 +177,11 @@ class HotaruPlayerValue {
       'volume': volume,
       'brightness': brightness,
       'playbackRate': playbackRate,
+      'speedRate': speedRate,
       'aspectRatio': aspectRatio,
+      'backendPlayback': backendPlayback,
+      'playMode': playMode,
       'flip': flip,
-      'playerRate': playerRate,
       'showTopControl': showTopControl,
       'showBottomControl': showBottomControl,
       'showVolumeToast': showVolumeToast,
@@ -180,13 +199,23 @@ class HotaruPlayerValue {
 
 /// -------------------------------------------
 
-/// 播放器翻转
-enum Flips {
+/// 播放器镜像翻转
+enum Flip {
   normal('normal'),
   horizontal('horizontal'),
   vertical('vertical');
 
   final String value;
 
-  const Flips(this.value);
+  const Flip(this.value);
+}
+
+enum PlayMode {
+  stop('stop'),
+  loop('loop'),
+  next('next');
+
+  final String value;
+
+  const PlayMode(this.value);
 }
