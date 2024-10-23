@@ -134,6 +134,9 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
             controller!.updateValue(
               controller!.value.copyWith(playing: false),
             );
+            if (controller?.onEnded != null) {
+              controller!.onEnded!();
+            }
           })
       ..addJavaScriptHandler(
         handlerName: 'Error',

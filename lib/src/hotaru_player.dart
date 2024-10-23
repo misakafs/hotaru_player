@@ -80,7 +80,6 @@ class _HotaruPlayerState extends State<HotaruPlayer> {
             // 中间:
             //   进度条
             // 右侧:
-            //   倍速
             //   全屏/小屏
             const VideoBottomBar(),
             // 音量调节提示框

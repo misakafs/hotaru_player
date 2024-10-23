@@ -54,8 +54,8 @@ class _BrightnessToastState extends State<BrightnessToast> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Icon(
-                    _controller.value.brightness == 0 ? Icons.brightness_1_rounded : Icons.wb_sunny_rounded,
+                  const Icon(
+                    Icons.wb_sunny_rounded,
                     color: Colors.white,
                     size: 28,
                   ),

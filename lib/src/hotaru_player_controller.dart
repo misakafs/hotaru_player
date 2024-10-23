@@ -12,10 +12,14 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   final HotaruPlayerOption option;
 
   final VoidCallback? onReady;
+  final VoidCallback? onEnded;
+  final VoidCallback? onExit;
 
   HotaruPlayerController({
     this.option = const HotaruPlayerOption(),
     this.onReady,
+    this.onEnded,
+    this.onExit,
   }) : super(HotaruPlayerValue());
 
   @override

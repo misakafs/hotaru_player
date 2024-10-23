@@ -66,6 +66,10 @@ class _VideoTopBarState extends State<VideoTopBar> {
                   onPressed: () {
                     if (_controller.value.fullscreen) {
                       _controller.toggleFullScreenMode();
+                      return;
+                    }
+                    if (_controller.onExit != null) {
+                      _controller.onExit!();
                     }
                   },
                   icon: const Icon(
