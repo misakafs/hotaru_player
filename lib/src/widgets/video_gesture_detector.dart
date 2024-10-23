@@ -6,6 +6,8 @@ import 'package:screen_brightness/screen_brightness.dart';
 
 import '../hotaru_player_controller.dart';
 
+const _padding = 30.0;
+
 class VideoGestureDetector extends StatefulWidget {
   const VideoGestureDetector({super.key});
 
@@ -150,10 +152,14 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
     // 滑动的垂直距离
     final dragDistance = details.delta.dy;
 
+    final padding = _controller.value.fullscreen ? _padding * 2 : 0;
+
+    final delta = dragDistance / (renderBox.size.height - padding);
+
     if (tapPosition < screenWidth / 2) {
       // 左侧上下滑动调节屏幕亮度
       // 这里需要使用实际的亮度调节逻辑
-      final brightness = (_controller.value.brightness - dragDistance / renderBox.size.height).clamp(0, 1).toDouble();
+      final brightness = (_controller.value.brightness - delta).clamp(0, 1).toDouble();
       _controller.updateValue(_controller.value.copyWith(
         brightness: brightness,
       ));
@@ -161,7 +167,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
     } else {
       // 右侧上下滑动调节音量
       // 这里需要使用实际的音量调节逻辑
-      final volume = (_controller.value.volume - dragDistance / renderBox.size.height).clamp(0, 1).toDouble();
+      final volume = (_controller.value.volume - delta).clamp(0, 1).toDouble();
       _controller.updateValue(_controller.value.copyWith(
         volume: volume,
       ));
@@ -226,19 +232,22 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapUp: _onTapUp,
-      onDoubleTap: _onDoubleTap,
-      onLongPressStart: _onLongPressStart,
-      onLongPressEnd: _onLongPressEnd,
-      onVerticalDragStart: _onVerticalDragStart,
-      onVerticalDragUpdate: _onVerticalDragUpdate,
-      onVerticalDragEnd: _onVerticalDragEnd,
-      onHorizontalDragStart: _onHorizontalDragStart,
-      onHorizontalDragUpdate: _onHorizontalDragUpdate,
-      onHorizontalDragEnd: _onHorizontalDragEnd,
-      child: Container(
-        color: Colors.transparent,
+    return Padding(
+      padding: _controller.value.fullscreen ? const EdgeInsets.all(_padding) : EdgeInsets.zero,
+      child: GestureDetector(
+        onTapUp: _onTapUp,
+        onDoubleTap: _onDoubleTap,
+        onLongPressStart: _onLongPressStart,
+        onLongPressEnd: _onLongPressEnd,
+        onVerticalDragStart: _onVerticalDragStart,
+        onVerticalDragUpdate: _onVerticalDragUpdate,
+        onVerticalDragEnd: _onVerticalDragEnd,
+        onHorizontalDragStart: _onHorizontalDragStart,
+        onHorizontalDragUpdate: _onHorizontalDragUpdate,
+        onHorizontalDragEnd: _onHorizontalDragEnd,
+        child: Container(
+          color: Colors.transparent,
+        ),
       ),
     );
   }
