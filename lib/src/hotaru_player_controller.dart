@@ -88,8 +88,8 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
     String? poster,
     Duration? position,
     bool? loop,
-    PlaybackRates? playbackRate,
-    AspectRatios? aspectRatio,
+    double? playbackRate,
+    String? aspectRatio,
     Flips? flip,
   }) async {
     final m = {};
@@ -106,10 +106,10 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
       m['loop'] = loop;
     }
     if (playbackRate != null) {
-      m['playbackRate'] = playbackRate.value;
+      m['playbackRate'] = playbackRate;
     }
     if (aspectRatio != null) {
-      m['aspectRatio'] = aspectRatio.value;
+      m['aspectRatio'] = aspectRatio;
     }
     if (flip != null) {
       m['flip'] = flip.value;

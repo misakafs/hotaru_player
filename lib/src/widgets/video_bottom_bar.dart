@@ -116,10 +116,13 @@ class _VideoBottomBarState extends State<VideoBottomBar> {
       bottom: 0,
       left: 0,
       right: 0,
-      child: AnimatedOpacity(
-        opacity: _controller.value.showBottomControl ? 1 : 0,
-        duration: const Duration(milliseconds: 200),
-        child: _controller.value.fullscreen ? _buildFullscreenBottomBar() : _buildNormalBottomBar(),
+      child: IgnorePointer(
+        ignoring: !_controller.value.showBottomControl,
+        child: AnimatedOpacity(
+          opacity: _controller.value.showBottomControl ? 1 : 0,
+          duration: const Duration(milliseconds: 200),
+          child: _controller.value.fullscreen ? _buildFullscreenBottomBar() : _buildNormalBottomBar(),
+        ),
       ),
     );
   }

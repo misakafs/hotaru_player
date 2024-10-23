@@ -41,46 +41,49 @@ class _VideoTopBarState extends State<VideoTopBar> {
       top: 0,
       left: 0,
       right: 0,
-      child: AnimatedOpacity(
-        opacity: _controller.value.showTopControl ? 1 : 0,
-        duration: const Duration(milliseconds: 200),
-        child: Container(
-          height: 60,
-          padding: _controller.value.fullscreen ? _fullscreenPadding : _padding,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.black,
-                Colors.black.withOpacity(0),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+      child: IgnorePointer(
+        ignoring: !_controller.value.showTopControl,
+        child: AnimatedOpacity(
+          opacity: _controller.value.showTopControl ? 1 : 0,
+          duration: const Duration(milliseconds: 200),
+          child: Container(
+            height: 60,
+            padding: _controller.value.fullscreen ? _fullscreenPadding : _padding,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black,
+                  Colors.black.withOpacity(0),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {
-                  if (_controller.value.fullscreen) {
-                    _controller.toggleFullScreenMode();
-                  }
-                },
-                icon: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    if (_controller.value.fullscreen) {
+                      _controller.toggleFullScreenMode();
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_rounded,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  openVideoSetting(context);
-                },
-                icon: const Icon(
-                  Icons.more_vert_rounded,
-                  color: Colors.white,
+                IconButton(
+                  onPressed: () {
+                    openVideoSetting(context);
+                  },
+                  icon: const Icon(
+                    Icons.more_vert_rounded,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

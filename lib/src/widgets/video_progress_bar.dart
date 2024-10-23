@@ -58,6 +58,10 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
           playing = _controller.value.playing;
           timeStamp = details.timeStamp;
 
+          _controller.updateValue(_controller.value.copyWith(
+            dragging: true,
+          ));
+
           // 如果已经播放，则暂停
           if (playing) {
             _controller.pause();
@@ -88,6 +92,9 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
         if (playing) {
           await _controller.play();
         }
+        _controller.updateValue(_controller.value.copyWith(
+          dragging: false,
+        ));
       },
     );
   }

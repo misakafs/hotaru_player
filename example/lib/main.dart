@@ -75,7 +75,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       position = Duration(milliseconds: value);
     }
     controller.init(
-      url: 'https://vip.ffzy-play6.com/20240910/29101_0c61127c/index.m3u8',
+      url: 'https://svipsvip.ffzyread1.com/20240806/30153_5e9b1670/index.m3u8',
       position: position,
       loop: false,
     );

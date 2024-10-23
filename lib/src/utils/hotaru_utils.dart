@@ -1,4 +1,5 @@
 class HotaruUtils {
+  /// 格式化时间
   static String formatDuration(Duration duration, bool exceedHour) {
     int hours = duration.inHours;
     int minutes = duration.inMinutes.remainder(60);

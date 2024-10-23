@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_volume_controller/flutter_volume_controller.dart';
-import 'package:hotaru_player/src/hotaru_player_value.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
 import '../hotaru_player_controller.dart';
@@ -16,6 +15,8 @@ class VideoGestureDetector extends StatefulWidget {
 
 class _VideoGestureDetectorState extends State<VideoGestureDetector> {
   late HotaruPlayerController _controller;
+
+  bool playing = false;
 
   Timer? _timer;
 
@@ -49,7 +50,18 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
       return;
     }
 
-    _timer = Timer(const Duration(seconds: 5), () {
+    var t = 5;
+
+    if (!_controller.value.ready) {
+      t = 8;
+    }
+
+    _timer = Timer(Duration(seconds: t), () {
+      // 如果正在进行拖拽行为，则重新触发隐藏控件
+      if (_controller.value.dragging) {
+        hideControl();
+        return;
+      }
       if (_controller.value.playing) {
         _controller.updateValue(
           _controller.value.copyWith(
@@ -92,7 +104,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
   // 处理长按事件
   void _onLongPressStart(LongPressStartDetails details) {
     _controller.change(
-      playbackRate: PlaybackRates.triple,
+      playbackRate: _controller.value.playbackRate * 2,
     );
     _controller.updateValue(_controller.value.copyWith(
       showSpeedToast: true,
@@ -109,7 +121,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
   }
 
   //
-  void _onVerticalDragStart(DragStartDetails details) {
+  void _onVerticalDragStart(DragStartDetails details) async {
     final size = MediaQuery.sizeOf(context);
     final screenWidth = size.width;
     final tapPosition = details.globalPosition.dx;
@@ -120,9 +132,11 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
         showBrightnessToast: true,
       ));
     } else {
+      final volume = await FlutterVolumeController.getVolume();
       // 右侧上下滑动调节音量
       _controller.updateValue(_controller.value.copyWith(
         showVolumeToast: true,
+        volume: volume,
       ));
     }
   }
@@ -177,14 +191,34 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
     _controller.updateValue(_controller.value.copyWith(
       showProgressToast: true,
     ));
+    setState(() {
+      playing = _controller.value.playing;
+
+      // 如果已经播放，则暂停
+      if (playing) {
+        _controller.pause();
+      }
+    });
   }
 
-  void _onHorizontalDragUpdate(DragUpdateDetails details) {
+  void _onHorizontalDragUpdate(DragUpdateDetails details) async {
     // 屏幕左右滑动调节视频进度
-    // 这里需要实现具体的视频进度调节逻辑
+    final currentPosition = _controller.value.position;
+
+    final t = details.primaryDelta! > 0 ? currentPosition.inMilliseconds + 1000 : currentPosition.inMilliseconds - 1000;
+
+    final position = Duration(milliseconds: t);
+
+    _controller.updateValue(_controller.value.copyWith(
+      position: position,
+    ));
+    await _controller.seek(position);
   }
 
-  void _onHorizontalDragEnd(DragEndDetails details) {
+  void _onHorizontalDragEnd(DragEndDetails details) async {
+    if (playing) {
+      await _controller.play();
+    }
     _controller.updateValue(_controller.value.copyWith(
       showProgressToast: false,
     ));

@@ -40,10 +40,10 @@ class HotaruPlayerValue {
   final double brightness;
 
   /// 播放倍率
-  final PlaybackRates playbackRate;
+  final double playbackRate;
 
   /// 播放器纵横比
-  final AspectRatios aspectRatio;
+  final String aspectRatio;
 
   /// 播放器翻转
   final Flips flip;
@@ -83,8 +83,8 @@ class HotaruPlayerValue {
     this.exceedHour = false,
     this.volume = 0.5,
     this.brightness = 0.5,
-    this.playbackRate = PlaybackRates.normal,
-    this.aspectRatio = AspectRatios.sixteenNine,
+    this.playbackRate = 1.0,
+    this.aspectRatio = '',
     this.flip = Flips.normal,
     this.playerRate = 1,
     this.showTopControl = true,
@@ -109,8 +109,8 @@ class HotaruPlayerValue {
     bool? exceedHour,
     double? volume,
     double? brightness,
-    PlaybackRates? playbackRate,
-    AspectRatios? aspectRatio,
+    double? playbackRate,
+    String? aspectRatio,
     Flips? flip,
     double? playerRate,
     bool? showTopControl,
@@ -179,31 +179,6 @@ class HotaruPlayerValue {
 }
 
 /// -------------------------------------------
-
-/// 播放倍率
-enum PlaybackRates {
-  half(0.5),
-  normal(1.0),
-  oneAndQuarter(1.25),
-  oneAndHalf(1.5),
-  twoTimes(2.0),
-  twoAndHalf(2.5),
-  triple(3.0);
-
-  final double value;
-
-  const PlaybackRates(this.value);
-}
-
-/// 播放器纵横比
-enum AspectRatios {
-  fourThree('4:3'),
-  sixteenNine('16:9');
-
-  final String value;
-
-  const AspectRatios(this.value);
-}
 
 /// 播放器翻转
 enum Flips {
