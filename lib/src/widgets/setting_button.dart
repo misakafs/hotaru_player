@@ -36,7 +36,7 @@ class _SettingButtonState extends State<SettingButton> {
   }
 
   void openVideoSetting(BuildContext context) {
-    _controller.updateValue(_controller.value.copyWith(
+    _controller.update(_controller.value.copyWith(
       showTopControl: false,
       showBottomControl: false,
     ));
@@ -62,7 +62,7 @@ class _SettingButtonState extends State<SettingButton> {
               ],
               selected: _controller.value.backendPlayback,
               onSelected: (option) {
-                _controller.updateValue(_controller.value.copyWith(
+                _controller.update(_controller.value.copyWith(
                   backendPlayback: option.v as bool,
                 ));
               },
@@ -76,7 +76,7 @@ class _SettingButtonState extends State<SettingButton> {
               ],
               selected: _controller.value.flip,
               onSelected: (option) {
-                _controller.updateValue(_controller.value.copyWith(
+                _controller.update(_controller.value.copyWith(
                   flip: option.v as Flip,
                 ));
                 _controller.change(flip: option.v);
@@ -91,7 +91,7 @@ class _SettingButtonState extends State<SettingButton> {
               ],
               selected: _controller.value.playMode,
               onSelected: (option) {
-                _controller.updateValue(_controller.value.copyWith(
+                _controller.update(_controller.value.copyWith(
                   playMode: option.v as PlayMode,
                 ));
                 _controller.change(playMode: option.v);
@@ -101,12 +101,12 @@ class _SettingButtonState extends State<SettingButton> {
               title: '画面尺寸',
               options: const [
                 Option('自适应', ''),
-                Option('19:6', '19:6'),
+                Option('16:9', '16:9'),
                 Option('4:3', '4:3'),
               ],
               selected: _controller.value.aspectRatio,
               onSelected: (option) {
-                _controller.updateValue(_controller.value.copyWith(
+                _controller.update(_controller.value.copyWith(
                   aspectRatio: option.v as String,
                 ));
                 _controller.change(aspectRatio: option.v);
@@ -120,12 +120,11 @@ class _SettingButtonState extends State<SettingButton> {
                 Option('1.25', 1.25),
                 Option('1.5', 1.5),
                 Option('2.0', 2.0),
-                Option('2.5', 2.5),
                 Option('3.0', 3.0),
               ],
               selected: _controller.value.playbackRate,
               onSelected: (option) {
-                _controller.updateValue(_controller.value.copyWith(
+                _controller.update(_controller.value.copyWith(
                   playbackRate: option.v as double,
                 ));
                 _controller.change(playbackRate: option.v);
@@ -141,7 +140,7 @@ class _SettingButtonState extends State<SettingButton> {
               ],
               selected: _controller.value.speedRate,
               onSelected: (option) {
-                _controller.updateValue(_controller.value.copyWith(
+                _controller.update(_controller.value.copyWith(
                   speedRate: option.v as double,
                 ));
               },

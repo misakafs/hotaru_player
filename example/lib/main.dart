@@ -9,6 +9,14 @@ void main() {
   runApp(const MyApp());
 }
 
+const List<Video> videos = [
+  Video('喜羊羊与灰太狼之守护', 'https://v8.tlkqc.com/wjv8/202410/02/CCwgWhydqD80/video/index.m3u8'),
+  Video('那个夏天：剧场版', 'https://v1.tlkqc.com/wjv1/202308/20/LyqF4mC2kN2/video/index.m3u8'),
+  Video('茶啊二中', 'https://v8.tlkqc.com/wjv8/202309/19/k7SyBBJjX21/video/index.m3u8'),
+  Video('中国惊奇先生电影版', 'https://v3.tlkqc.com/wjv3/202401/07/RMuCFvPy782/video/index.m3u8'),
+  Video('鲁邦三世VS猫眼三姐妹', 'https://v8.tlkqc.com/wjv8/202402/10/QkuB12dvyw1/video/index.m3u8'),
+];
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -39,6 +47,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with WidgetsBindingObserver {
   late final HotaruPlayerController controller;
 
+  int index = 0;
+
   @override
   void initState() {
     super.initState();
@@ -46,6 +56,15 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     controller = HotaruPlayerController(
       onReady: () async {
         await _initState();
+      },
+      onEnded: () async {
+        index += 1;
+        if (index >= videos.length) {
+          index = 0;
+        }
+        final video = videos[index];
+        controller.change(url: video.url);
+        setState(() {});
       },
     );
   }
@@ -67,15 +86,24 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   Future<void> _initState() async {
     final prefs = await SharedPreferences.getInstance();
-    final value = prefs.getInt('record');
+    final value = prefs.getInt('position');
 
     Duration position = Duration.zero;
 
     if (value != null) {
       position = Duration(milliseconds: value);
     }
+
+    final i = prefs.getInt('index') ?? 0;
+
+    final video = videos[i];
+
+    setState(() {
+      index = i;
+    });
+
     controller.init(
-      url: 'https://v1.tlkqc.com/wjv1/202308/20/Xnh8H2jWiK2/video/index.m3u8',
+      url: video.url,
       position: position,
     );
   }
@@ -84,7 +112,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   Future<void> _dispose() async {
     final prefs = await SharedPreferences.getInstance();
     final value = controller.value.position.inMilliseconds;
-    await prefs.setInt('record', value);
+    await prefs.setInt('position', value);
+    await prefs.setInt('index', index);
   }
 
   @override
@@ -107,9 +136,36 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           ),
           child: Scaffold(
             body: SafeArea(
-              child: SizedBox(
-                height: height,
-                child: player,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: height,
+                    child: player,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: ListView.builder(
+                        itemCount: videos.length,
+                        itemBuilder: (context, i) {
+                          return ListTile(
+                            title: Text(
+                              videos[i].title,
+                              style: TextStyle(color: i == index ? Theme.of(context).primaryColor : Colors.black),
+                            ),
+                            onTap: () {
+                              final u = videos[i].url;
+                              controller.change(url: u);
+                              setState(() {
+                                index = i;
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
@@ -117,4 +173,11 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       },
     );
   }
+}
+
+class Video {
+  final String title;
+  final String url;
+
+  const Video(this.title, this.url);
 }

@@ -6,6 +6,15 @@ class HotaruPlayerValue {
   /// webview 控制器
   final InAppWebViewController? webViewController;
 
+  /// 播放链接
+  final String url;
+
+  /// 封面
+  final String poster;
+
+  /// 是否自动播放
+  final bool autoPlay;
+
   /// 播放器是否准备好
   final bool ready;
 
@@ -83,6 +92,9 @@ class HotaruPlayerValue {
   ///
   HotaruPlayerValue({
     this.webViewController,
+    this.url = '',
+    this.poster = '',
+    this.autoPlay = true,
     this.ready = false,
     this.fullscreen = false,
     this.verticalScreen = false,
@@ -111,6 +123,9 @@ class HotaruPlayerValue {
   ///
   HotaruPlayerValue copyWith({
     InAppWebViewController? webViewController,
+    String? url,
+    String? poster,
+    bool? autoPlay,
     bool? ready,
     bool? fullscreen,
     bool? verticalScreen,
@@ -137,6 +152,9 @@ class HotaruPlayerValue {
   }) {
     return HotaruPlayerValue(
       webViewController: webViewController ?? this.webViewController,
+      url: url ?? this.url,
+      poster: poster ?? this.poster,
+      autoPlay: autoPlay ?? this.autoPlay,
       ready: ready ?? this.ready,
       fullscreen: fullscreen ?? this.fullscreen,
       verticalScreen: verticalScreen ?? this.verticalScreen,
@@ -165,6 +183,9 @@ class HotaruPlayerValue {
 
   Map<String, dynamic> toJson() {
     return {
+      'url': url,
+      'poster': poster,
+      'autoPlay': autoPlay,
       'ready': ready,
       'fullscreen': fullscreen,
       'verticalScreen': verticalScreen,

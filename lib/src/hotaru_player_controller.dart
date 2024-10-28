@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,46 +9,6 @@ import 'package:flutter/services.dart';
 import 'hotaru_player_value.dart';
 
 class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
-  /// 播放地址
-  /// 默认：''
-  final String url;
-
-  /// 播放封面
-  /// 默认：''
-  final String poster;
-
-  /// 自动播放
-  /// 默认: true
-  final bool autoPlay;
-
-  /// 后台播放
-  /// 默认: true
-  final bool backendPlayback;
-
-  /// 开始播放位置
-  /// 默认：0
-  final Duration position;
-
-  /// 播放方式：stop - 播放完暂停; loop - 循环播放; next - 播放完执行onNext函数
-  /// 默认: stop
-  final PlayMode playMode;
-
-  /// 播放倍率
-  /// 默认: 1.0
-  final double playbackRate;
-
-  /// 快进倍率
-  /// 默认: 2.0
-  final double speedRate;
-
-  /// 镜像翻转: normal - 正常; horizontal - 水平翻转; vertical - 上下翻转
-  /// 默认: normal
-  final Flip flip;
-
-  /// 画面比例，例子: '16:9', '4:3'
-  /// 默认: ''
-  final String aspectRatio;
-
   /// 启用混合渲染
   /// 默认: true
   final bool enableHybridComposition;
@@ -56,25 +17,31 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   final VoidCallback? onEnded;
   final VoidCallback? onNext;
   final VoidCallback? onExit;
+  final ErrorCallback? onError;
 
   HotaruPlayerController({
-    this.url = '',
-    this.poster = '',
-    this.autoPlay = true,
-    this.backendPlayback = true,
-    this.position = Duration.zero,
-    this.playMode = PlayMode.stop,
-    this.playbackRate = 1.0,
-    this.speedRate = 2.0,
-    this.flip = Flip.normal,
-    this.aspectRatio = '',
+    String url = '',
+    String poster = '',
+    bool autoPlay = true,
+    bool backendPlayback = true,
+    Duration position = Duration.zero,
+    PlayMode playMode = PlayMode.stop,
+    double playbackRate = 1.0,
+    double speedRate = 2.0,
+    Flip flip = Flip.normal,
+    String aspectRatio = '',
+    //
     this.enableHybridComposition = true,
     this.onReady,
     this.onEnded,
     this.onNext,
     this.onExit,
+    this.onError,
   }) : super(
           HotaruPlayerValue(
+            url: url,
+            poster: poster,
+            autoPlay: autoPlay,
             backendPlayback: backendPlayback,
             position: position,
             playMode: playMode,
@@ -97,14 +64,15 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
 
   Future<void> _evaluateJavascript(String source) async {
     if (value.ready) {
-      await value.webViewController?.evaluateJavascript(source: source);
+      return value.webViewController?.evaluateJavascript(source: source);
       return;
     }
     log('the player is not ready');
   }
 
-  void updateValue(HotaruPlayerValue newValue) => value = newValue;
+  void update(HotaruPlayerValue newValue) => value = newValue;
 
+  /// 初始化网页播放器
   Future<void> init({
     String? url,
     String? poster,
@@ -157,18 +125,35 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
 
     final obj = const JsonEncoder().convert(m);
 
-    await value.webViewController?.evaluateJavascript(source: 'init($obj)');
+    return value.webViewController?.evaluateJavascript(source: 'init($obj)');
   }
 
   /// 播放器播放
-  Future<void> play() => _evaluateJavascript('play()');
+  Future<void> play() {
+    return _evaluateJavascript('play()');
+  }
 
   /// 播放器暂停
-  Future<void> pause() => _evaluateJavascript('pause()');
+  Future<void> pause() {
+    return _evaluateJavascript('pause()');
+  }
+
+  /// 切换播放和暂停
+  Future<void> togglePlayPause() async {
+    update(value.copyWith(playing: !value.playing));
+    if (value.playing) {
+      return play();
+    } else {
+      return pause();
+    }
+  }
 
   /// 跳转到指定位置
-  Future<void> seek(Duration t) => _evaluateJavascript('seek(${t.inMilliseconds.toDouble() / 1000})');
+  Future<void> seek(Duration t) {
+    return _evaluateJavascript('seek(${t.inMilliseconds.toDouble() / 1000})');
+  }
 
+  /// 修改网页播放器属性
   Future<void> change({
     String? url,
     String? poster,
@@ -204,34 +189,26 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
     if (flip != null) {
       m['flip'] = flip.value;
     }
-    await _evaluateJavascript('change(${const JsonEncoder().convert(m)})');
+    return _evaluateJavascript('change(${const JsonEncoder().convert(m)})');
   }
 
-  Future<void> togglePlay() async {
-    updateValue(value.copyWith(playing: !value.playing));
-    if (value.playing) {
-      await play();
-    } else {
-      await pause();
-    }
-  }
-
+  /// 切换全屏
   Future<void> toggleFullScreenMode() async {
-    updateValue(value.copyWith(fullscreen: !value.fullscreen));
+    update(value.copyWith(fullscreen: !value.fullscreen));
     if (value.fullscreen) {
       // SystemChrome.setPreferredOrientations([
       //   DeviceOrientation.landscapeLeft,
       //   DeviceOrientation.landscapeRight,
       // ]);
 
-      await AutoOrientation.landscapeAutoMode(forceSensor: true);
+      return AutoOrientation.landscapeAutoMode(forceSensor: true);
     } else {
-      await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      return SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     }
   }
 
   void toggleVerticalScreenMode() {
-    updateValue(value.copyWith(verticalScreen: !value.verticalScreen));
+    update(value.copyWith(verticalScreen: !value.verticalScreen));
   }
 }
 

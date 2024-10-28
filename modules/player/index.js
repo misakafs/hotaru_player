@@ -14,8 +14,8 @@ window.init = (option) => {
             poster: option?.poster ?? '',
             volume: 1,
             muted: false,
-            autoplay: option?.autoPlay ?? true,
-            loop: option?.loop ?? false,
+            autoplay: false,
+            loop: false,
             setting: false,
             miniProgressBar: false,
             lock: false,
@@ -66,7 +66,9 @@ window.init = (option) => {
             if (option?.aspectRatio) {
                 p.aspectRatio = option.aspectRatio
             }
-            p.play()
+            if (option?.autoPlay) {
+                p.play()
+            }
             window.flutter_inappwebview.callHandler('Ready')
         }
     )
@@ -112,6 +114,12 @@ window.pause = () => {
     art?.pause()
 }
 
+
+// t - 秒，eg: 2.232
+window.seek = (t = 0) => {
+    art.seek = t
+}
+
 // - [url]: 播放地址, string
 // - [poster]: 播放封面, string
 // - [seek]: 播放开始位置, number
@@ -121,32 +129,26 @@ window.pause = () => {
 // - [flip]: 播放器翻转，'normal' | 'horizontal' | 'vertical'
 window.change = (obj) => {
 
-    const newObj = Object.assign({}, obj)
-
-    if (newObj.hasOwnProperty('url')) {
-        art.switchUrl(newObj.url).then(r => {})
+    if (obj.hasOwnProperty('url')) {
+        art.switchUrl(obj.url).then(r => {})
     }
-    if (newObj.hasOwnProperty('poster')) {
-        art.poster = newObj.poster
+    if (obj.hasOwnProperty('poster')) {
+        art.poster = obj.poster
     }
-    if (newObj.hasOwnProperty('loop')) {
-        art.loop = newObj.loop
+    if (obj.hasOwnProperty('loop')) {
+        art.loop = obj.loop
     }
-    if (newObj.hasOwnProperty('seek')) {
-        art.seek = newObj.seek
+    if (obj.hasOwnProperty('seek')) {
+        art.seek = obj.seek
     }
-    if (newObj.hasOwnProperty('playbackRate')) {
-        art.playbackRate = newObj.playbackRate
+    if (obj.hasOwnProperty('playbackRate')) {
+        art.playbackRate = obj.playbackRate
     }
-    if (newObj.hasOwnProperty('aspectRatio')) {
-        art.aspectRatio = newObj.aspectRatio
+    if (obj.hasOwnProperty('aspectRatio')) {
+        art.aspectRatio = obj.aspectRatio
     }
-    if (newObj.hasOwnProperty('flip')) {
-        art.flip = newObj.flip
+    if (obj.hasOwnProperty('flip')) {
+        art.flip = obj.flip
     }
 }
 
-// t - 秒，eg: 2.232
-window.seek = (t = 0) => {
-    art.seek = t
-}

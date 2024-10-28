@@ -40,7 +40,7 @@ class _PlayPauseButtonState extends State<PlayPauseButton> {
         color: Colors.white,
         size: 32,
       ),
-      onPressed: () => _controller.togglePlay(),
+      onPressed: () => _controller.togglePlayPause(),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hotaru_player/src/hotaru_player_controller.dart';
 import 'package:hotaru_player/src/player.dart';
 import 'package:hotaru_player/src/widgets/brightness_toast.dart';
+import 'package:hotaru_player/src/widgets/mini_progress_bar.dart';
 import 'package:hotaru_player/src/widgets/progress_toast.dart';
 import 'package:hotaru_player/src/widgets/speed_toast.dart';
 import 'package:hotaru_player/src/widgets/video_bottom_bar.dart';
@@ -82,6 +83,8 @@ class _HotaruPlayerState extends State<HotaruPlayer> {
             // 右侧:
             //   全屏/小屏
             const VideoBottomBar(),
+            // 迷你进度条，非全屏
+            const MiniProgressBar(),
             // 音量调节提示框
             const VolumeToast(),
             // 亮度调节提示框

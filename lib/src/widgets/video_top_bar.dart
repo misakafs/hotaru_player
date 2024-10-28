@@ -37,6 +37,10 @@ class _VideoTopBarState extends State<VideoTopBar> {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+
+    final timeStr = '${now.hour}:${now.minute}';
+
     return Positioned(
       top: 0,
       left: 0,
@@ -52,7 +56,7 @@ class _VideoTopBarState extends State<VideoTopBar> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.black,
+                  Colors.black.withOpacity(0.8),
                   Colors.black.withOpacity(0),
                 ],
                 begin: Alignment.topCenter,
@@ -77,6 +81,11 @@ class _VideoTopBarState extends State<VideoTopBar> {
                     color: Colors.white,
                   ),
                 ),
+                if (_controller.value.fullscreen)
+                  Text(
+                    timeStr,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 const SettingButton(),
               ],
             ),

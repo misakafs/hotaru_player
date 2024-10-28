@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:hotaru_player/src/hotaru_player_value.dart';
 
 import 'hotaru_player_controller.dart';
 
@@ -12,47 +13,8 @@ class Player extends StatefulWidget {
   State<Player> createState() => _PlayerState();
 }
 
-class _PlayerState extends State<Player> with WidgetsBindingObserver {
+class _PlayerState extends State<Player> {
   HotaruPlayerController? controller;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    controller = HotaruPlayerController.of(context);
-
-    switch (state) {
-      case AppLifecycleState.resumed:
-        // 表示应用是可见的，并且处于前台活动状态。用户可以与屏幕交互
-        break;
-
-      // case AppLifecycleState.inactive:
-      //   // 表示应用处于非活动状态，但仍然可见。这种情况可能发生在用户接收到来电或者应用被另一个临时界面（如弹出对话框）覆盖时
-      //   break;
-      //
-      // case AppLifecycleState.paused:
-      //   // 表示应用目前不可见，已经进入后台，但仍然处于内存中。这通常发生在用户切换到另一个应用或者点击了主页按钮
-      //   break;
-      // case AppLifecycleState.hidden:
-      //   // 这个状态在 iOS 设备上使用，表示应用已经被完全遮盖，对用户不可见。这通常发生在用户锁定了屏幕或者应用被其他全屏应用遮盖。
-      //   break;
-      // case AppLifecycleState.detached:
-      //   // 表示应用正在从当前设备上分离，这通常发生在应用即将被销毁时。
-      //   // 这个状态在 Android 设备上不常见，因为它通常与操作系统如何管理应用生命周期的方式有关。
-      //   break;
-      default:
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +29,7 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
           userAgent: '',
           mediaPlaybackRequiresUserGesture: false,
           // 允许后台播放
-          allowBackgroundAudioPlaying: controller?.value.backendPlayback,
+          allowBackgroundAudioPlaying: true,
           transparentBackground: true,
           disableContextMenu: true,
           supportZoom: false,
@@ -90,7 +52,7 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
 
   /// webview 创建
   void onWebViewCreated(InAppWebViewController webController) {
-    controller!.updateValue(
+    controller!.update(
       controller!.value.copyWith(webViewController: webController),
     );
 
@@ -98,8 +60,11 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
       ..addJavaScriptHandler(
           handlerName: 'Ready',
           callback: (_) {
-            controller!.updateValue(
-              controller!.value.copyWith(ready: true, playing: true),
+            controller!.update(
+              controller!.value.copyWith(
+                ready: true,
+                playing: true,
+              ),
             );
           })
       ..addJavaScriptHandler(
@@ -107,7 +72,7 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
           callback: (args) {
             final int t = (args.first * 1000.0).floor();
             final d = Duration(milliseconds: t);
-            controller!.updateValue(
+            controller!.update(
               controller!.value.copyWith(
                 duration: d,
                 exceedHour: d.inHours > 0,
@@ -118,7 +83,7 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
           handlerName: 'Position',
           callback: (args) {
             final int t = (args.first * 1000.0).floor();
-            controller!.updateValue(
+            controller!.update(
               controller!.value.copyWith(position: Duration(milliseconds: t)),
             );
           })
@@ -126,27 +91,44 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
           handlerName: 'Buffered',
           callback: (args) {
             final int t = (args.first * 1000.0).floor();
-            controller!.updateValue(
+            controller!.update(
               controller!.value.copyWith(buffered: Duration(milliseconds: t)),
             );
           })
       ..addJavaScriptHandler(
           handlerName: 'Ended',
           callback: (_) {
-            controller!.updateValue(
+            controller!.update(
               controller!.value.copyWith(playing: false),
             );
+
             if (controller?.onEnded != null) {
               controller!.onEnded!();
+            }
+
+            if (controller?.value.playMode == PlayMode.loop) {
+              controller!.update(
+                controller!.value.copyWith(playing: true),
+              );
+              controller?.play();
+              return;
+            }
+            if (controller?.value.playMode == PlayMode.next && controller?.onNext != null) {
+              controller!.onNext!();
             }
           })
       ..addJavaScriptHandler(
         handlerName: 'Error',
         callback: (args) {
           log('hotaru player error: ${args.first}');
-          controller!.updateValue(
+          controller!.update(
             controller!.value.copyWith(playing: false),
           );
+          if (controller?.onError != null) {
+            Exception exception = Exception('hotaru player error: ${args.first}');
+            StackTrace currentStackTrace = StackTrace.current;
+            controller?.onError!(exception, currentStackTrace);
+          }
         },
       );
   }
@@ -157,9 +139,9 @@ class _PlayerState extends State<Player> with WidgetsBindingObserver {
       controller!.onReady!();
     }
     controller!.init(
-      url: controller?.url,
-      poster: controller?.poster,
-      autoPlay: controller?.autoPlay,
+      url: controller?.value.url,
+      poster: controller?.value.poster,
+      autoPlay: controller?.value.autoPlay,
       position: controller?.value.position,
       playbackRate: controller?.value.playbackRate,
       flip: controller?.value.flip,

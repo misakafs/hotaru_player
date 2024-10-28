@@ -65,7 +65,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
         return;
       }
       if (_controller.value.playing) {
-        _controller.updateValue(
+        _controller.update(
           _controller.value.copyWith(
             showTopControl: false,
             showBottomControl: false,
@@ -78,13 +78,13 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
   // 处理屏幕点击事件
   void _onTapUp(TapUpDetails details) {
     if (_controller.value.showTopControl && _controller.value.showBottomControl) {
-      _controller.updateValue(_controller.value.copyWith(
+      _controller.update(_controller.value.copyWith(
         showTopControl: false,
         showBottomControl: false,
       ));
       return;
     }
-    _controller.updateValue(_controller.value.copyWith(
+    _controller.update(_controller.value.copyWith(
       showTopControl: true,
       showBottomControl: true,
     ));
@@ -94,7 +94,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
   // 处理双击事件
   void _onDoubleTap() {
     if (_controller.value.playing) {
-      _controller.updateValue(_controller.value.copyWith(
+      _controller.update(_controller.value.copyWith(
         playing: false,
         showTopControl: true,
         showBottomControl: true,
@@ -108,7 +108,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
     _controller.change(
       playbackRate: _controller.value.playbackRate * 2,
     );
-    _controller.updateValue(_controller.value.copyWith(
+    _controller.update(_controller.value.copyWith(
       showSpeedToast: true,
     ));
   }
@@ -117,7 +117,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
     _controller.change(
       playbackRate: _controller.value.playbackRate,
     );
-    _controller.updateValue(_controller.value.copyWith(
+    _controller.update(_controller.value.copyWith(
       showSpeedToast: false,
     ));
   }
@@ -130,13 +130,13 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
 
     if (tapPosition < screenWidth / 2) {
       // 左侧上下滑动调节屏幕亮度
-      _controller.updateValue(_controller.value.copyWith(
+      _controller.update(_controller.value.copyWith(
         showBrightnessToast: true,
       ));
     } else {
       final volume = await FlutterVolumeController.getVolume();
       // 右侧上下滑动调节音量
-      _controller.updateValue(_controller.value.copyWith(
+      _controller.update(_controller.value.copyWith(
         showVolumeToast: true,
         volume: volume,
       ));
@@ -160,7 +160,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
       // 左侧上下滑动调节屏幕亮度
       // 这里需要使用实际的亮度调节逻辑
       final brightness = (_controller.value.brightness - delta).clamp(0, 1).toDouble();
-      _controller.updateValue(_controller.value.copyWith(
+      _controller.update(_controller.value.copyWith(
         brightness: brightness,
       ));
       await ScreenBrightness.instance.setApplicationScreenBrightness(brightness);
@@ -168,7 +168,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
       // 右侧上下滑动调节音量
       // 这里需要使用实际的音量调节逻辑
       final volume = (_controller.value.volume - delta).clamp(0, 1).toDouble();
-      _controller.updateValue(_controller.value.copyWith(
+      _controller.update(_controller.value.copyWith(
         volume: volume,
       ));
       await FlutterVolumeController.setVolume(volume);
@@ -182,19 +182,19 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
 
     if (tapPosition < screenWidth / 2) {
       // 左侧上下滑动调节屏幕亮度
-      _controller.updateValue(_controller.value.copyWith(
+      _controller.update(_controller.value.copyWith(
         showBrightnessToast: false,
       ));
     } else {
       // 右侧上下滑动调节音量
-      _controller.updateValue(_controller.value.copyWith(
+      _controller.update(_controller.value.copyWith(
         showVolumeToast: false,
       ));
     }
   }
 
   void _onHorizontalDragStart(DragStartDetails details) {
-    _controller.updateValue(_controller.value.copyWith(
+    _controller.update(_controller.value.copyWith(
       showProgressToast: true,
     ));
     setState(() {
@@ -215,7 +215,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
 
     final position = Duration(milliseconds: t);
 
-    _controller.updateValue(_controller.value.copyWith(
+    _controller.update(_controller.value.copyWith(
       position: position,
     ));
     await _controller.seek(position);
@@ -225,7 +225,7 @@ class _VideoGestureDetectorState extends State<VideoGestureDetector> {
     if (playing) {
       await _controller.play();
     }
-    _controller.updateValue(_controller.value.copyWith(
+    _controller.update(_controller.value.copyWith(
       showProgressToast: false,
     ));
   }

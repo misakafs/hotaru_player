@@ -58,7 +58,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
           playing = _controller.value.playing;
           timeStamp = details.timeStamp;
 
-          _controller.updateValue(_controller.value.copyWith(
+          _controller.update(_controller.value.copyWith(
             dragging: true,
           ));
 
@@ -74,14 +74,14 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
             timeStamp = null;
           });
         }
-        _controller.updateValue(_controller.value.copyWith(
+        _controller.update(_controller.value.copyWith(
           position: details.timeStamp,
         ));
         await _controller.seek(details.timeStamp);
       },
       onDragEnd: () async {
         if (timeStamp != null) {
-          _controller.updateValue(_controller.value.copyWith(
+          _controller.update(_controller.value.copyWith(
             position: timeStamp,
           ));
           await _controller.seek(timeStamp!);
@@ -92,7 +92,7 @@ class _VideoProgressBarState extends State<VideoProgressBar> {
         if (playing) {
           await _controller.play();
         }
-        _controller.updateValue(_controller.value.copyWith(
+        _controller.update(_controller.value.copyWith(
           dragging: false,
         ));
       },

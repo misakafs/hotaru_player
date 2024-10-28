@@ -42,7 +42,7 @@ class _VideoBottomBarState extends State<VideoBottomBar> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.black,
+            Colors.black.withOpacity(0.8),
             Colors.black.withOpacity(0),
           ],
           begin: Alignment.bottomCenter,
@@ -88,7 +88,7 @@ class _VideoBottomBarState extends State<VideoBottomBar> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.black,
+            Colors.black.withOpacity(0.8),
             Colors.black.withOpacity(0),
           ],
           begin: Alignment.bottomCenter,
