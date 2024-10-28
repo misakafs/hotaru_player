@@ -34,7 +34,7 @@ class _SpeedToastState extends State<SpeedToast> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 20,
+      top: 50,
       left: 0,
       right: 0,
       child: Center(

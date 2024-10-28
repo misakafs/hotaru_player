@@ -39,7 +39,7 @@ class _VideoTopBarState extends State<VideoTopBar> {
   Widget build(BuildContext context) {
     final now = DateTime.now();
 
-    final timeStr = '${now.hour}:${now.minute}';
+    final timeStr = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
 
     return Positioned(
       top: 0,
@@ -56,7 +56,7 @@ class _VideoTopBarState extends State<VideoTopBar> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.black.withOpacity(0.8),
+                  Colors.black.withOpacity(0.9),
                   Colors.black.withOpacity(0),
                 ],
                 begin: Alignment.topCenter,
