@@ -59,11 +59,12 @@ class _PlayerState extends State<Player> {
     webController
       ..addJavaScriptHandler(
           handlerName: 'Ready',
-          callback: (_) {
+          callback: (args) {
+            final playing = (args.first as bool);
             controller!.update(
               controller!.value.copyWith(
                 ready: true,
-                playing: true,
+                playing: playing,
               ),
             );
           })
@@ -135,9 +136,6 @@ class _PlayerState extends State<Player> {
 
   /// 网页加载完成后
   void onLoadStop() {
-    if (controller?.onReady != null) {
-      controller!.onReady!();
-    }
     controller!.init(
       url: controller?.value.url,
       poster: controller?.value.poster,
@@ -147,5 +145,8 @@ class _PlayerState extends State<Player> {
       flip: controller?.value.flip,
       aspectRatio: controller?.value.aspectRatio,
     );
+    if (controller?.onReady != null) {
+      controller!.onReady!();
+    }
   }
 }

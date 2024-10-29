@@ -69,7 +69,7 @@ window.init = (option) => {
             if (option?.autoPlay) {
                 p.play()
             }
-            window.flutter_inappwebview.callHandler('Ready')
+            window.flutter_inappwebview.callHandler('Ready', p.playing)
         }
     )
 
