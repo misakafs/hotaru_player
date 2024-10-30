@@ -47,6 +47,7 @@ class _HotaruPlayerBuilderState extends State<HotaruPlayerBuilder> with WidgetsB
 
   @override
   void dispose() {
+    ScreenBrightness.instance.resetApplicationScreenBrightness();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
