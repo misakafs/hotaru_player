@@ -13,12 +13,12 @@
   "devDependencies": {
     "prettier": "^3.3.3",
     "prettier-plugin-rational-order": "^1.0.3",
-    "sass": "^1.79.5",
-    "vite": "^5.4.8",
-    "vite-plugin-singlefile": "^2.0.2"
+    "sass": "^1.80.6",
+    "vite": "^5.4.10",
+    "vite-plugin-singlefile": "^2.0.3"
   },
   "dependencies": {
-    "artplayer": "^5.1.7",
-    "hls.js": "^1.5.16"
+    "artplayer": "^5.2.1",
+    "hls.js": "^1.5.17"
   }
 }

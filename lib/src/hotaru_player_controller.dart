@@ -129,17 +129,26 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   }
 
   /// 播放器播放
-  Future<void> play() {
-    return _evaluateJavascript('play()');
+  Future<void> play() async {
+    if (value.ready) {
+      return _evaluateJavascript('play()');
+    }
+    return;
   }
 
   /// 播放器暂停
-  Future<void> pause() {
-    return _evaluateJavascript('pause()');
+  Future<void> pause() async {
+    if (value.ready) {
+      return _evaluateJavascript('pause()');
+    }
+    return;
   }
 
   /// 切换播放和暂停
   Future<void> togglePlayPause() async {
+    if (!value.ready) {
+      return;
+    }
     update(value.copyWith(playing: !value.playing));
     if (value.playing) {
       return play();
@@ -149,7 +158,7 @@ class HotaruPlayerController extends ValueNotifier<HotaruPlayerValue> {
   }
 
   /// 跳转到指定位置
-  Future<void> seek(Duration t) {
+  Future<void> seek(Duration t) async {
     return _evaluateJavascript('seek(${t.inMilliseconds.toDouble() / 1000})');
   }
 

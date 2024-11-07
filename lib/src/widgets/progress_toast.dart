@@ -49,7 +49,7 @@ class _ProgressToastState extends State<ProgressToast> {
               width: _controller.value.exceedHour ? 150 : 120,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Row(

@@ -47,7 +47,7 @@ class _SpeedToastState extends State<SpeedToast> {
               width: 124,
               padding: const EdgeInsets.only(left: 8, right: 16),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: const Row(

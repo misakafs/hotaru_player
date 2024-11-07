@@ -3,7 +3,7 @@ import { viteSingleFile } from 'vite-plugin-singlefile'
 
 export default defineConfig(({ mode }) => {
     const base = mode === 'flutter' ? '' : '/'
-    const outDir = mode === 'flutter' ? '../../lib/assets' : 'dist'
+    const outDir = mode === 'flutter' ? '../lib/assets' : 'dist'
     return {
         plugins: [viteSingleFile()],
         base: base,
