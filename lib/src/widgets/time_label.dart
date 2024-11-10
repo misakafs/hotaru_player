@@ -44,7 +44,7 @@ class _TimeLabelState extends State<TimeLabel> {
       child: Row(
         children: [
           Text(
-            HotaruUtils.formatDuration(_controller.value.position, _controller.value.exceedHour),
+            HotaruUtils.formatDuration(_controller.value.position),
             style: TextStyle(
               color: Colors.white,
               fontSize: widget.fontSize,
@@ -62,7 +62,7 @@ class _TimeLabelState extends State<TimeLabel> {
           ),
           const SizedBox(width: 1),
           Text(
-            HotaruUtils.formatDuration(_controller.value.duration, _controller.value.exceedHour),
+            HotaruUtils.formatDuration(_controller.value.duration),
             style: TextStyle(
               color: Colors.white,
               fontSize: widget.fontSize,

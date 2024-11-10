@@ -46,7 +46,7 @@ class _ProgressToastState extends State<ProgressToast> {
             visible: _controller.value.showProgressToast,
             child: Container(
               height: 40,
-              width: _controller.value.exceedHour ? 150 : 120,
+              width: _controller.value.duration.inHours > 0 ? 150 : 120,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.5),
@@ -55,10 +55,10 @@ class _ProgressToastState extends State<ProgressToast> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(HotaruUtils.formatDuration(_controller.value.position, _controller.value.exceedHour),
+                  Text(HotaruUtils.formatDuration(_controller.value.position),
                       style: const TextStyle(color: Colors.white)),
                   const Text('/', style: TextStyle(color: Colors.white)),
-                  Text(HotaruUtils.formatDuration(_controller.value.duration, _controller.value.exceedHour),
+                  Text(HotaruUtils.formatDuration(_controller.value.duration),
                       style: const TextStyle(color: Colors.white)),
                 ],
               ),

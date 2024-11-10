@@ -39,9 +39,6 @@ class HotaruPlayerValue {
   /// 总时长
   final Duration duration;
 
-  /// 时长是否超过一小时
-  final bool exceedHour;
-
   /// 音量
   final double volume;
 
@@ -103,7 +100,6 @@ class HotaruPlayerValue {
     this.position = Duration.zero,
     this.buffered = Duration.zero,
     this.duration = Duration.zero,
-    this.exceedHour = false,
     this.volume = 0.5,
     this.brightness = 0.5,
     this.playbackRate = 1.0,
@@ -134,7 +130,6 @@ class HotaruPlayerValue {
     Duration? position,
     Duration? buffered,
     Duration? duration,
-    bool? exceedHour,
     double? volume,
     double? brightness,
     double? playbackRate,
@@ -163,7 +158,6 @@ class HotaruPlayerValue {
       position: position ?? this.position,
       buffered: buffered ?? this.buffered,
       duration: duration ?? this.duration,
-      exceedHour: exceedHour ?? this.exceedHour,
       volume: volume ?? this.volume,
       brightness: brightness ?? this.brightness,
       playbackRate: playbackRate ?? this.playbackRate,
@@ -194,7 +188,6 @@ class HotaruPlayerValue {
       'position': position,
       'buffered': buffered,
       'duration': duration,
-      'exceedHour': exceedHour,
       'volume': volume,
       'brightness': brightness,
       'playbackRate': playbackRate,

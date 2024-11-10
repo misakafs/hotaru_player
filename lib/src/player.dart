@@ -76,7 +76,6 @@ class _PlayerState extends State<Player> {
             controller!.update(
               controller!.value.copyWith(
                 duration: d,
-                exceedHour: d.inHours > 0,
               ),
             );
           })
