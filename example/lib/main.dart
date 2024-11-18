@@ -10,11 +10,8 @@ void main() {
 }
 
 const List<Video> videos = [
-  Video('喜羊羊与灰太狼之守护', 'https://v8.tlkqc.com/wjv8/202410/02/CCwgWhydqD80/video/index.m3u8'),
-  Video('那个夏天：剧场版', 'https://v1.tlkqc.com/wjv1/202308/20/LyqF4mC2kN2/video/index.m3u8'),
-  Video('茶啊二中', 'https://v8.tlkqc.com/wjv8/202309/19/k7SyBBJjX21/video/index.m3u8'),
-  Video('中国惊奇先生电影版', 'https://v3.tlkqc.com/wjv3/202401/07/RMuCFvPy782/video/index.m3u8'),
-  Video('鲁邦三世VS猫眼三姐妹', 'https://v8.tlkqc.com/wjv8/202402/10/QkuB12dvyw1/video/index.m3u8'),
+  Video('示例1', 'https://ik.imagekit.io/misaka/acg/202411182147001.mp4'),
+  Video('示例2', 'https://hd.ijycnd.com/play/nelr0qMb/index.m3u8'),
 ];
 
 class MyApp extends StatelessWidget {
