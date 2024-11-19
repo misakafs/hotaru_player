@@ -140,7 +140,9 @@ window.seek = (t = 0) => {
 window.change = (obj) => {
 
     if (obj.hasOwnProperty('url')) {
-        art.switchUrl(obj.url).then(r => {})
+        art.switchUrl(obj.url).then(r => {
+            art.play()
+        })
     }
     if (obj.hasOwnProperty('poster')) {
         art.poster = obj.poster
