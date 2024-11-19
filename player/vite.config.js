@@ -10,12 +10,16 @@ export default defineConfig(({ mode }) => {
         build: {
             outDir: outDir,
             emptyOutDir: true,
-            rollupOptions: {
-                // 禁用摇树优化
-                treeshake: {
-                    enabled: false
-                }
-            }
+            minify: true
+//            rollupOptions: {
+//                // 禁用摇树优化
+//                treeshake: {
+//                    enabled: false
+//                }
+//            }
+        },
+        esbuild: {
+          drop: ["console", "debugger"],
         },
         css: {
             preprocessorOptions: {
