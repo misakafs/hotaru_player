@@ -69,6 +69,24 @@ class _PlayerState extends State<Player> {
             );
           })
       ..addJavaScriptHandler(
+          handlerName: 'Play',
+          callback: (args) {
+            controller!.update(
+              controller!.value.copyWith(
+                playing: true,
+              ),
+            );
+          })
+      ..addJavaScriptHandler(
+          handlerName: 'Pause',
+          callback: (args) {
+            controller!.update(
+              controller!.value.copyWith(
+                playing: false,
+              ),
+            );
+          })
+      ..addJavaScriptHandler(
           handlerName: 'Duration',
           callback: (args) {
             final int t = (args.first * 1000.0).floor();

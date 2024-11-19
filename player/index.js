@@ -73,6 +73,16 @@ window.init = (option) => {
         }
     )
 
+    // 视频处于播放状态
+    art.on('video:play', (event) => {
+        window.flutter_inappwebview.callHandler('Play')
+    })
+
+    // 视频处于暂停状态
+    art.on('video:pause', (event) => {
+        window.flutter_inappwebview.callHandler('Pause')
+    })
+
     // 视频的总时长已改变，秒
     art.on('video:durationchange', (event) => {
         window.flutter_inappwebview.callHandler('Duration', event.target.duration)

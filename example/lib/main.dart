@@ -102,6 +102,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     controller.init(
       url: video.url,
       position: position,
+      autoPlay: true,
     );
   }
 
